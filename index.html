@@ -459,7 +459,7 @@ footer{padding:32px 40px;background:var(--ink);border-top:1px solid rgba(255,255
   <div style="display:flex;flex-direction:column;gap:4px" id="galleryGrid">
 
     <!-- 1번: 전체 너비 대형 -->
-    <div style="position:relative;overflow:hidden;background:var(--ink2);height:420px">
+    <div style="position:relative;overflow:hidden;background:var(--ink2);height:clamp(220px,28vw,380px)">
       <img src="gallery_1.jpg" alt="병원 내부" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" style="width:100%;height:100%;object-fit:cover">
       <div class="gfb" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;flex-direction:column;gap:10px;background:var(--ink2)">
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
@@ -468,7 +468,7 @@ footer{padding:32px 40px;background:var(--ink);border-top:1px solid rgba(255,255
     </div>
 
     <!-- 2+3번: 나란히 한 줄 -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;height:300px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;height:clamp(160px,20vw,260px)">
       <div style="position:relative;overflow:hidden;background:var(--ink2)">
         <img src="gallery_2.jpg" alt="의료 장비" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" style="width:100%;height:100%;object-fit:cover">
         <div class="gfb" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;flex-direction:column;gap:10px;background:var(--ink2)">
@@ -486,7 +486,7 @@ footer{padding:32px 40px;background:var(--ink);border-top:1px solid rgba(255,255
     </div>
 
     <!-- 4+5번: 나란히 한 줄 -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;height:300px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;height:clamp(160px,20vw,260px)">
       <div style="position:relative;overflow:hidden;background:var(--ink2)">
         <img src="gallery_4.jpg" alt="진료실" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" style="width:100%;height:100%;object-fit:cover">
         <div class="gfb" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;flex-direction:column;gap:10px;background:var(--ink2)">
@@ -600,7 +600,7 @@ footer{padding:32px 40px;background:var(--ink);border-top:1px solid rgba(255,255
 </section>
 
 <!-- METHODS -->
-<section id="methods" style="padding:80px 0 0">
+<section id="methods" style="padding:0;background:var(--off)">
   <div style="padding:0 40px;max-width:1100px;margin:0 auto 48px;background:var(--ink2);padding-top:60px;padding-bottom:48px;max-width:100%;">
     <div style="max-width:1100px;margin:0 auto;padding:0 40px">
       <div class="sec-lbl fu" style="color:var(--gold)">치료 방법</div>
@@ -615,26 +615,26 @@ footer{padding:32px 40px;background:var(--ink);border-top:1px solid rgba(255,255
       <div class="mb-body">손상으로 약해진 인대·힘줄에 증식제를 주사하여 조직을 재생·강화시키는 비수술적 치료법입니다. 만성화된 통증의 원인이 되는 조직을 강화하여 통증을 근본적으로 해결합니다.</div>
       <div class="mb-tags"><span class="mb-tag">만성관절통</span><span class="mb-tag">인대·건 강화</span><span class="mb-tag">스포츠손상</span><span class="mb-tag">만성두통</span></div>
     </div>
-    <div class="mb dark">
+    <div class="mb lite">
       <div class="mb-n">02</div>
       <div class="mb-lbl">콜라겐 재생 주사</div>
       <div class="mb-title">농축 콜라겐 주사</div>
       <div class="mb-body">손상된 관절 부위에 연골·힘줄의 주요 성분인 콜라겐을 직접 주입합니다. 흔히 관절염 환자가 만성통증으로 시달리다 비수술 치료의 골든타임을 놓치게 되는 경우가 있어, 조직 회복을 돕는 적극적 치료입니다.</div>
       <div class="mb-tags"><span class="mb-tag">연골결손</span><span class="mb-tag">건염파열</span><span class="mb-tag">아킬레스건</span><span class="mb-tag">족저근막</span></div>
     </div>
-    <div class="mb lite dark-over" style="background:var(--ink3)">
+    <div class="mb lite">
       <div class="mb-n">03</div>
-      <div class="mb-lbl" style="color:var(--gold)">물리적 재생 치료</div>
-      <div class="mb-title">단계별 체외충격파 (ESWT)<br><span style="font-size:.85rem;font-weight:400;color:rgba(255,255,255,.65)">+ 도수치료 (보조적 병행)</span></div>
+      <div class="mb-lbl">물리적 재생 치료</div>
+      <div class="mb-title">단계별 체외충격파 (ESWT)<br><span style="font-size:.85rem;font-weight:400;color:var(--muted)">+ 도수치료 (보조적 병행)</span></div>
       <div class="mb-body">Radial(1대) + Focusing(2대) 장비를 활용한 단계별 체외충격파 치료. 충격파로 혈류량을 증가시키며 힘줄 및 주위 조직의 재생을 유도합니다. 도수치료는 재활 목적으로 보조적으로 병행합니다.</div>
       <div class="mb-tags"><span class="mb-tag">석회성건염</span><span class="mb-tag">회전근개</span><span class="mb-tag">족저근막염</span><span class="mb-tag">만성통증</span></div>
     </div>
-    <div class="mb dark" style="background:rgba(12,22,42,.95);border-left:3px solid var(--gold)">
-      <div class="mb-n" style="color:rgba(201,153,58,.2)">04</div>
-      <div class="mb-lbl" style="color:var(--gold-lt)">줄기세포 재생 치료 · 최종 단계</div>
-      <div class="mb-title" style="color:var(--white)">줄기세포 이식<br><span style="color:var(--gold-lt)">PRP · BMAC</span></div>
+    <div class="mb lite" style="border-left:3px solid var(--gold)">
+      <div class="mb-n">04</div>
+      <div class="mb-lbl" style="color:var(--gold)">줄기세포 재생 치료 · 최종 단계</div>
+      <div class="mb-title">줄기세포 이식<br><span style="color:var(--gold)">PRP · BMAC</span></div>
       <div class="mb-body">환자 본인의 골수·혈액에서 채취한 줄기세포를 원심분리로 농축하여 손상 관절에 직접 주사합니다. 1~3단계 치료에서 더 나아가 연골 자체를 재생시키는 근본 치료입니다. 보건복지부 신의료기술 인정.</div>
-      <div class="mb-tags"><span class="mb-tag" style="border-color:rgba(201,153,58,.3);color:rgba(201,153,58,.7)">보건복지부 신의료기술</span><span class="mb-tag" style="border-color:rgba(201,153,58,.3);color:rgba(201,153,58,.7)">연골재생</span><span class="mb-tag" style="border-color:rgba(201,153,58,.3);color:rgba(201,153,58,.7)">당일귀가</span><span class="mb-tag" style="border-color:rgba(201,153,58,.3);color:rgba(201,153,58,.7)">거부반응無</span></div>
+      <div class="mb-tags"><span class="mb-tag">보건복지부 신의료기술</span><span class="mb-tag">연골재생</span><span class="mb-tag">당일귀가</span><span class="mb-tag">거부반응無</span></div>
     </div>
   </div>
 </section>
