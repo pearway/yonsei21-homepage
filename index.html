@@ -345,8 +345,8 @@ footer{padding:32px 40px;background:var(--ink);border-top:1px solid rgba(255,255
     <span class="logo-en">Seoul Yonsei 21C Clinic</span>
   </div>
   <nav>
-    <a class="nav-link gold" href="#stem">줄기세포 시술</a>
     <a class="nav-link coral" href="#emrg">외상·응급수술</a>
+    <a class="nav-link gold" href="#stem">줄기세포 시술</a>
     <a class="nav-link" href="#treats">진료과목</a>
     <a class="nav-link" href="#methods">치료방법</a>
     <a class="nav-link" href="#doctor">의료진</a>
@@ -362,8 +362,8 @@ footer{padding:32px 40px;background:var(--ink);border-top:1px solid rgba(255,255
 </header>
 
 <div class="mob-nav" id="mn">
-  <a href="#stem" onclick="document.getElementById('mn').classList.remove('open')">🔬 줄기세포 시술 (핵심)</a>
   <a href="#emrg" onclick="document.getElementById('mn').classList.remove('open')">🏥 외상처치 &amp; 응급수술 (핵심)</a>
+  <a href="#stem" onclick="document.getElementById('mn').classList.remove('open')">🔬 줄기세포 시술 (핵심)</a>
   <a href="#treats" onclick="document.getElementById('mn').classList.remove('open')">진료과목</a>
   <a href="#methods" onclick="document.getElementById('mn').classList.remove('open')">치료 방법</a>
   <a href="#doctor" onclick="document.getElementById('mn').classList.remove('open')">의료진 소개</a>
@@ -400,32 +400,6 @@ footer{padding:32px 40px;background:var(--ink);border-top:1px solid rgba(255,255
   <div class="scroll-hint"><div class="scroll-line"></div><span>scroll</span></div>
 </section>
 
-<!-- STEM CELL -->
-<section id="stem">
-  <div class="stem-wrap">
-    <div class="stem-vis" style="padding:0;position:relative;overflow:hidden;min-height:480px">
-      <img id="stemPhoto" src="stem_procedure.jpg" alt="줄기세포 시술" onerror="this.style.display='none';document.getElementById('stemFallback').style.display='flex'" style="width:100%;height:100%;object-fit:cover;display:block;min-height:480px">
-      <div id="stemFallback" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;flex-direction:column;gap:12px;background:linear-gradient(135deg,#EDF2F8,#E0EAF4)">
-        <div style="width:70px;height:70px;border-radius:50%;background:rgba(201,153,58,.15);border:1px solid rgba(201,153,58,.3);display:flex;align-items:center;justify-content:center">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(201,153,58,.6)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-        </div>
-        <span style="font-size:.75rem;color:rgba(59,90,138,.5);letter-spacing:.1em">관리자에서 사진 업로드</span>
-      </div>
-    </div>
-    <div class="stem-body">
-      <div class="badge badge-g">핵심 치료 · Core Treatment 01</div>
-      <h2 class="core-h2 fu">관절내 줄기세포 시술<br><em>PRP · BMAC</em></h2>
-      <p class="core-p fu">환자 본인의 혈액이나 골수에서 채취한 줄기세포를 분리·농축하여 손상된 관절에 직접 주사합니다. 줄기세포의 자가 증식 능력이 닳아가는 연골을 재생시키고 퇴행성 관절염의 근본적인 개선을 돕습니다.</p>
-      <div class="pts fu">
-        <div class="pt"><span class="pt-n">1</span><div><div class="pt-t">보건복지부 신의료기술 인정</div><div class="pt-d">인정성·유효성 및 연골 재생 효과 공식 인정. 본인 세포 사용으로 거부반응 없이 안전합니다.</div></div></div>
-        <div class="pt"><span class="pt-n">2</span><div><div class="pt-t">연골 기능 70~80% 회복</div><div class="pt-d">1회 시술로도 탁월한 연골 재생 효과. 퇴행성 관절염 초기~중기 환자에게 적용됩니다.</div></div></div>
-        <div class="pt"><span class="pt-n">3</span><div><div class="pt-t">짧은 시술 · 당일 귀가</div><div class="pt-d">채혈/골수 천자 1~5분 + 원심분리 20분 + 주사 5분. 시술 후 바로 일상생활 가능.</div></div></div>
-      </div>
-      <a class="core-btn btn-g fu" href="#reserv" onclick="event.preventDefault();scrollToReserv()">📞 상담 예약하기</a>
-    </div>
-  </div>
-</section>
-
 <!-- EMERGENCY -->
 <section id="emrg">
   <div class="emrg-wrap">
@@ -451,6 +425,32 @@ footer{padding:32px 40px;background:var(--ink);border-top:1px solid rgba(255,255
         </div>
         <span style="font-size:.75rem;color:rgba(201,64,56,.5);letter-spacing:.1em">관리자에서 사진 업로드</span>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- STEM CELL -->
+<section id="stem">
+  <div class="stem-wrap">
+    <div class="stem-vis" style="padding:0;position:relative;overflow:hidden;min-height:480px">
+      <img id="stemPhoto" src="stem_procedure.jpg" alt="줄기세포 시술" onerror="this.style.display='none';document.getElementById('stemFallback').style.display='flex'" style="width:100%;height:100%;object-fit:cover;display:block;min-height:480px">
+      <div id="stemFallback" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;flex-direction:column;gap:12px;background:linear-gradient(135deg,#EDF2F8,#E0EAF4)">
+        <div style="width:70px;height:70px;border-radius:50%;background:rgba(201,153,58,.15);border:1px solid rgba(201,153,58,.3);display:flex;align-items:center;justify-content:center">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(201,153,58,.6)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        </div>
+        <span style="font-size:.75rem;color:rgba(59,90,138,.5);letter-spacing:.1em">관리자에서 사진 업로드</span>
+      </div>
+    </div>
+    <div class="stem-body">
+      <div class="badge badge-g">핵심 치료 · Core Treatment 01</div>
+      <h2 class="core-h2 fu">관절내 줄기세포 시술<br><em>PRP · BMAC</em></h2>
+      <p class="core-p fu">환자 본인의 혈액이나 골수에서 채취한 줄기세포를 분리·농축하여 손상된 관절에 직접 주사합니다. 줄기세포의 자가 증식 능력이 닳아가는 연골을 재생시키고 퇴행성 관절염의 근본적인 개선을 돕습니다.</p>
+      <div class="pts fu">
+        <div class="pt"><span class="pt-n">1</span><div><div class="pt-t">보건복지부 신의료기술 인정</div><div class="pt-d">인정성·유효성 및 연골 재생 효과 공식 인정. 본인 세포 사용으로 거부반응 없이 안전합니다.</div></div></div>
+        <div class="pt"><span class="pt-n">2</span><div><div class="pt-t">연골 기능 70~80% 회복</div><div class="pt-d">1회 시술로도 탁월한 연골 재생 효과. 퇴행성 관절염 초기~중기 환자에게 적용됩니다.</div></div></div>
+        <div class="pt"><span class="pt-n">3</span><div><div class="pt-t">짧은 시술 · 당일 귀가</div><div class="pt-d">채혈/골수 천자 1~5분 + 원심분리 20분 + 주사 5분. 시술 후 바로 일상생활 가능.</div></div></div>
+      </div>
+      <a class="core-btn btn-g fu" href="#reserv" onclick="event.preventDefault();scrollToReserv()">📞 상담 예약하기</a>
     </div>
   </div>
 </section>
