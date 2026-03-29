@@ -74,7 +74,7 @@ header.scrolled{box-shadow:0 2px 24px rgba(15,30,45,.08)}
 .mobile-menu a{padding:13px 0;font-size:.95rem;font-weight:500;color:var(--dark);border-bottom:1px solid var(--border)}
 
 /* ── HOME HERO SLIDER ── */
-.hero{position:relative;height:640px;overflow:hidden;background:var(--dark)}
+.hero{position:relative;height:640px;overflow:hidden;background:var(--dark);margin-top:64px}
 .slide{position:absolute;inset:0;opacity:0;transition:opacity .9s ease-in-out;display:flex;align-items:center}
 .slide.active{opacity:1}
 .slide-img{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat}.slide-img::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,rgba(10,20,35,.75) 0%,rgba(10,20,35,.45) 50%,rgba(10,20,35,.25) 100%)}
@@ -126,8 +126,8 @@ header.scrolled{box-shadow:0 2px 24px rgba(15,30,45,.08)}
 .feat-band{background:var(--primary);padding:56px 40px;position:relative;overflow:hidden}
 .feat-band::before{content:'';position:absolute;width:500px;height:500px;border-radius:50%;background:rgba(255,255,255,.06);top:-200px;right:-100px}
 .feat-inner{max-width:960px;margin:0 auto;position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:40px;text-align:center}
-.feat-hl h3{font-family:'Noto Serif KR',serif;font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:600;color:white;line-height:1.4;text-align:center}
-.feat-hl p{font-size:.87rem;color:rgba(255,255,255,.7);margin-top:8px}
+.feat-hl{text-align:center;width:100%}.feat-hl h3{font-family:'Noto Serif KR',serif;font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:600;color:white;line-height:1.4;text-align:center}
+.feat-hl p{font-size:.87rem;color:rgba(255,255,255,.7);margin-top:8px;text-align:center}
 .feat-div{display:none}
 .feat-items{width:100%;display:flex;flex-direction:column;gap:16px}
 .feat-item{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:22px 28px;backdrop-filter:blur(4px);display:flex;align-items:flex-start;gap:20px;text-align:left}
@@ -151,19 +151,19 @@ header.scrolled{box-shadow:0 2px 24px rgba(15,30,45,.08)}
 .lcard:hover .lcard-btn{background:var(--g1);border-color:var(--g1)}
 
 .trust{background:var(--bg2);padding:80px 40px}
-.trust-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
-.trust-quote{font-family:'Noto Serif KR',serif;font-size:clamp(1.5rem,2.4vw,2rem);font-weight:600;color:var(--dark);line-height:1.45;letter-spacing:-.02em;margin:16px 0 22px}
+.trust-inner{max-width:800px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:48px;text-align:center}
+.trust-quote{font-family:'Noto Serif KR',serif;font-size:clamp(1.5rem,2.4vw,2rem);font-weight:600;color:var(--dark);line-height:1.45;letter-spacing:-.02em;margin:16px 0 22px;text-align:center}
 .trust-quote em{font-style:normal;color:var(--g2)}
-.trust-body{font-size:.91rem;color:var(--muted);line-height:1.9;margin-bottom:30px}
+.trust-body{font-size:.91rem;color:var(--muted);line-height:1.9;margin-bottom:30px;text-align:center}
 .trust-link{display:inline-flex;align-items:center;gap:10px;background:var(--dark);color:white;padding:12px 26px;border-radius:8px;font-size:.87rem;font-weight:700;transition:all .25s;cursor:pointer}
 .trust-link::after{content:'';display:inline-block;width:14px;height:14px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M12 5l7 7-7 7'/%3E%3C/svg%3E") no-repeat center/contain;vertical-align:middle;margin-left:2px}
 .trust-link:hover{background:var(--g2)}
 .trust-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.tstat{background:white;border-radius:16px;padding:26px 22px;border:1px solid var(--border)}
-.tstat:first-child{grid-column:1/-1;background:var(--grad);border:none}
-.tstat-n{font-size:1.9rem;font-weight:700;color:var(--g2);letter-spacing:-.04em;line-height:1}
+.tstat{background:white;border-radius:20px;padding:32px 24px;border:1px solid var(--border);text-align:center;transition:transform .3s,box-shadow .3s}
+.tstat:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(13,79,124,.08)}.tstat:first-child{background:var(--grad);border:none}
+.tstat-n{font-size:clamp(2rem,3vw,2.6rem);font-weight:700;color:var(--primary);letter-spacing:-.04em;line-height:1;margin-bottom:8px}
 .tstat:first-child .tstat-n{color:white}
-.tstat-l{font-size:.77rem;color:var(--muted);margin-top:5px}
+.tstat-l{font-size:.82rem;color:var(--muted);margin-top:6px;line-height:1.5}
 .tstat:first-child .tstat-l{color:rgba(255,255,255,.75)}
 
 .sns-bar{background:var(--white);padding:50px 40px;border-top:1px solid var(--border)}
@@ -232,8 +232,8 @@ header.scrolled{box-shadow:0 2px 24px rgba(15,30,45,.08)}
 .doctor-info h2{font-size:1.5rem;font-weight:700;color:var(--dark);margin-bottom:4px}
 .doctor-info .role{font-size:.85rem;color:var(--g2);font-weight:600;margin-bottom:20px}
 .doctor-careers{list-style:none;display:flex;flex-direction:column;gap:8px}
-.doctor-careers li{font-size:.87rem;color:var(--muted);display:flex;gap:10px}
-.doctor-careers li::before{content:'▸';color:var(--g1);flex-shrink:0}
+.doctor-careers li{font-size:.87rem;color:var(--muted);display:flex;gap:6px;align-items:flex-start;flex-wrap:nowrap}
+.doctor-careers li::before{content:'▸';color:var(--g1);flex-shrink:0}.doctor-careers .badge{white-space:nowrap;flex-shrink:0}
 .tv-badge{display:inline-flex;align-items:center;gap:8px;background:var(--gl);color:var(--g2);padding:8px 16px;border-radius:8px;font-size:.8rem;font-weight:700;margin-top:18px;border:1px solid var(--g1)}
 
 /* ── FEES PAGE ── */
@@ -266,7 +266,7 @@ footer{background:var(--dark);color:rgba(255,255,255,.5);padding:56px 40px 36px;
 
 /* ── RESPONSIVE ── */
 @media(max-width:1024px){
-  .trust-inner{grid-template-columns:1fr;gap:40px}
+  .trust-inner{flex-direction:column;gap:32px}
   .feat-items{grid-template-columns:1fr 1fr}
   .feat-div{display:none}
   .location-grid{grid-template-columns:1fr}
@@ -330,7 +330,7 @@ footer{background:var(--dark);color:rgba(255,255,255,.5);padding:56px 40px 36px;
   .logo-mark{width:36px;height:29px}
   .nav-cta{padding:8px 14px;font-size:.78rem}
   /* 히어로 */
-  .hero{height:460px}
+  .hero{height:460px;margin-top:64px}
   .slide-content{padding:0 20px}
   .slide h2{font-size:clamp(1.5rem,5vw,2rem);margin-bottom:14px}
   .slide p{font-size:.88rem;margin-bottom:24px}
@@ -419,9 +419,9 @@ footer{background:var(--dark);color:rgba(255,255,255,.5);padding:56px 40px 36px;
 
 @media(max-width:480px){
   html,body{overflow-x:hidden!important;width:100%!important}
-  .hero{height:400px}
+  .hero{height:400px;margin-top:64px}
   .slide h2{font-size:1.4rem}
-  .trust-stats{grid-template-columns:1fr}
+  .trust-stats{grid-template-columns:1fr;gap:16px}
   .tstat:first-child{grid-column:auto}
   .nav-cta{display:none}
   .logo-text .en{display:none}
@@ -917,12 +917,12 @@ const PAGES = {
 
             <div style="margin:20px 0 10px;font-size:.75rem;font-weight:700;color:var(--primary);letter-spacing:.1em;text-transform:uppercase;padding-bottom:6px;border-bottom:1px solid var(--border)">경력</div>
             <ul class="doctor-careers">
-              <li><span style="color:var(--primary);font-weight:700;margin-right:6px;font-size:.8rem">현)</span>서울연세21세기의원 정형외과 대표원장</li>
-              <li><span style="color:var(--muted);font-weight:600;margin-right:6px;font-size:.8rem">전)</span>21세기병원 정형외과 원장</li>
-              <li><span style="color:var(--muted);font-weight:600;margin-right:6px;font-size:.8rem">전)</span>우리병원 정형외과 원장</li>
-              <li><span style="color:var(--muted);font-weight:600;margin-right:6px;font-size:.8rem">전)</span>좋은나은 정형외과 원장 (청년재생의원)</li>
-              <li><span style="color:var(--muted);font-weight:600;margin-right:6px;font-size:.8rem">전)</span>경기도 초대 지역응급의료기관 센터장</li>
-              <li><span style="color:var(--muted);font-weight:600;margin-right:6px;font-size:.8rem">전)</span>Road FC 정형외과 의사</li>
+              <li><span style="color:var(--primary);font-weight:700;margin-right:6px;font-size:.8rem;white-space:nowrap;flex-shrink:0">현)</span>서울연세21세기의원 정형외과 대표원장</li>
+              <li><span style="color:var(--muted);font-weight:600;margin-right:6px;font-size:.8rem;white-space:nowrap;flex-shrink:0">전)</span>21세기병원 정형외과 원장</li>
+              <li><span style="color:var(--muted);font-weight:600;margin-right:6px;font-size:.8rem;white-space:nowrap;flex-shrink:0">전)</span>우리병원 정형외과 원장</li>
+              <li><span style="color:var(--muted);font-weight:600;margin-right:6px;font-size:.8rem;white-space:nowrap;flex-shrink:0">전)</span>좋은나은 정형외과 원장 (청년재생의원)</li>
+              <li><span style="color:var(--muted);font-weight:600;margin-right:6px;font-size:.8rem;white-space:nowrap;flex-shrink:0">전)</span>경기도 초대 지역응급의료기관 센터장</li>
+              <li><span style="color:var(--muted);font-weight:600;margin-right:6px;font-size:.8rem;white-space:nowrap;flex-shrink:0">전)</span>Road FC 정형외과 의사</li>
             </ul>
 
             <div style="margin:20px 0 10px;font-size:.75rem;font-weight:700;color:var(--primary);letter-spacing:.1em;text-transform:uppercase;padding-bottom:6px;border-bottom:1px solid var(--border)">학회 활동</div>
