@@ -85,7 +85,7 @@ header.scrolled{box-shadow:0 2px 24px rgba(15,30,45,.08)}
 .slide h2 em{font-style:normal;color:#7DC241;text-shadow:0 2px 12px rgba(0,0,0,.5)}
 .slide p{font-size:1rem;color:white;max-width:440px;line-height:1.85;margin-bottom:36px;text-shadow:0 1px 10px rgba(0,0,0,.55)}
 .slide-btn{display:inline-flex;align-items:center;gap:10px;background:#7DC241;color:white;padding:13px 28px;border-radius:8px;font-size:.9rem;font-weight:700;box-shadow:0 4px 18px rgba(13,79,124,.2);transition:all .25s}
-.slide-btn::after{content:'→'}
+.slide-btn::after{content:'';display:inline-block;width:16px;height:16px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M12 5l7 7-7 7'/%3E%3C/svg%3E") no-repeat center/contain;vertical-align:middle;margin-left:2px}
 .slide-btn:hover{background:#5FA832;transform:translateY(-2px)}
 .slide-dots{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:10}
 .dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:all .3s}
@@ -125,13 +125,13 @@ header.scrolled{box-shadow:0 2px 24px rgba(15,30,45,.08)}
 
 .feat-band{background:var(--primary);padding:56px 40px;position:relative;overflow:hidden}
 .feat-band::before{content:'';position:absolute;width:500px;height:500px;border-radius:50%;background:rgba(255,255,255,.06);top:-200px;right:-100px}
-.feat-inner{max-width:1280px;margin:0 auto;position:relative;z-index:1;display:flex;align-items:center;gap:60px;flex-wrap:wrap}
-.feat-hl h3{font-family:'Noto Serif KR',serif;font-size:clamp(1.4rem,2.2vw,1.9rem);font-weight:600;color:white;line-height:1.4}
+.feat-inner{max-width:960px;margin:0 auto;position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:40px;text-align:center}
+.feat-hl h3{font-family:'Noto Serif KR',serif;font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:600;color:white;line-height:1.4;text-align:center}
 .feat-hl p{font-size:.87rem;color:rgba(255,255,255,.7);margin-top:8px}
-.feat-div{width:1px;height:80px;background:rgba(255,255,255,.25);flex-shrink:0}
-.feat-items{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:18px;min-width:0}
-.feat-item{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:20px;backdrop-filter:blur(4px)}
-.feat-num{font-size:.65rem;letter-spacing:.12em;color:rgba(255,255,255,.6);margin-bottom:8px;font-weight:500}
+.feat-div{display:none}
+.feat-items{width:100%;display:flex;flex-direction:column;gap:16px}
+.feat-item{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:22px 28px;backdrop-filter:blur(4px);display:flex;align-items:flex-start;gap:20px;text-align:left}
+.feat-num{font-size:1.6rem;font-weight:700;color:rgba(255,255,255,.25);flex-shrink:0;line-height:1;min-width:40px}
 .feat-t{font-size:.9rem;font-weight:700;color:white;margin-bottom:6px}
 .feat-d{font-size:.78rem;color:rgba(255,255,255,.65);line-height:1.65}
 
@@ -147,7 +147,7 @@ header.scrolled{box-shadow:0 2px 24px rgba(15,30,45,.08)}
 .lcard h3{font-size:1.3rem;font-weight:700;color:white;margin-bottom:6px}
 .lcard p{font-size:.81rem;color:rgba(255,255,255,.65);margin-bottom:16px}
 .lcard-btn{display:inline-flex;align-items:center;gap:8px;font-size:.79rem;font-weight:700;color:white;border:1px solid rgba(255,255,255,.4);border-radius:6px;padding:8px 14px;transition:all .2s}
-.lcard-btn::after{content:'→'}
+.lcard-btn::after{content:'';display:inline-block;width:14px;height:14px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M12 5l7 7-7 7'/%3E%3C/svg%3E") no-repeat center/contain;vertical-align:middle;margin-left:2px}
 .lcard:hover .lcard-btn{background:var(--g1);border-color:var(--g1)}
 
 .trust{background:var(--bg2);padding:80px 40px}
@@ -156,7 +156,7 @@ header.scrolled{box-shadow:0 2px 24px rgba(15,30,45,.08)}
 .trust-quote em{font-style:normal;color:var(--g2)}
 .trust-body{font-size:.91rem;color:var(--muted);line-height:1.9;margin-bottom:30px}
 .trust-link{display:inline-flex;align-items:center;gap:10px;background:var(--dark);color:white;padding:12px 26px;border-radius:8px;font-size:.87rem;font-weight:700;transition:all .25s;cursor:pointer}
-.trust-link::after{content:'→'}
+.trust-link::after{content:'';display:inline-block;width:14px;height:14px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M12 5l7 7-7 7'/%3E%3C/svg%3E") no-repeat center/contain;vertical-align:middle;margin-left:2px}
 .trust-link:hover{background:var(--g2)}
 .trust-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .tstat{background:white;border-radius:16px;padding:26px 22px;border:1px solid var(--border)}
@@ -320,33 +320,83 @@ footer{background:var(--dark);color:rgba(255,255,255,.5);padding:56px 40px 36px;
 }
 
 @media(max-width:768px){
-  .header-inner{padding:0 20px}
+  /* 헤더 */
+  .header-inner{padding:0 16px}
   .gnb{display:none}
   .hamburger{display:flex}
-  .catch-bar,.home-services,.feat-band,.trust,.sns-bar,footer{padding-left:20px;padding-right:20px}
-  .sub-hero{padding-left:20px;padding-right:20px}
-  .sub-body{padding:0 20px 60px}
-  .sub-aside{margin:0 -20px;padding:0 20px}
-  .hero{height:480px}
+  .logo-text .ko{font-size:.85rem}
+  .logo-text .en{font-size:.58rem}
+  .logo-mark{width:36px;height:29px}
+  .nav-cta{padding:8px 14px;font-size:.78rem}
+
+  /* 히어로 슬라이더 */
+  .hero{height:460px}
   .slide-content{padding:0 20px}
+  .slide h2{font-size:clamp(1.5rem,5vw,2rem);margin-bottom:14px}
+  .slide p{font-size:.88rem;margin-bottom:24px}
+  .slide-btn{padding:11px 20px;font-size:.84rem}
+  .slide-eyebrow{font-size:.65rem;margin-bottom:14px}
+
+  /* 섹션 패딩 */
+  .catch-bar,.home-services,.feat-band,.trust,.sns-bar,footer{padding-left:20px;padding-right:20px}
+  .catch-inner{flex-direction:column;align-items:flex-start;gap:14px}
+  .catch-text{font-size:clamp(1.1rem,4vw,1.4rem)}
+
+  /* 서비스 카드 */
   .svc-grid{grid-template-columns:1fr;gap:16px}
-  .three-grid{grid-template-columns:1fr}
-  .lcard{height:240px}
+  .home-services{padding-top:48px;padding-bottom:48px}
+
+  /* 3단 링크카드 */
+  .three-grid{grid-template-columns:1fr;gap:16px}
+  .lcard{height:200px}
+
+  /* 특장점 배너 */
   .feat-items{grid-template-columns:1fr}
-  .footer-inner{flex-direction:column;gap:32px}
-  .footer-nav{gap:24px;flex-wrap:wrap}
+  .feat-band{padding:40px 20px}
+
+  /* 신뢰 섹션 */
+  .trust{padding:48px 20px}
+  .trust-quote{font-size:1.3rem}
+  .trust-stats{grid-template-columns:1fr 1fr}
+
+  /* 푸터 */
+  .footer-inner{flex-direction:column;gap:28px}
+  .footer-nav{gap:20px;flex-wrap:wrap}
+  .footer-mark{width:52px;height:42px}
+
+  /* 서브페이지 */
+  .sub-hero{padding:40px 20px 32px}
+  .sub-hero h1{font-size:1.5rem}
+  .sub-body{padding:0 16px 60px}
+  .sub-aside{margin:0 -16px;padding:0 16px}
+
+  /* 의료진 카드 */
   .doctor-card{flex-direction:column}
-  .doctor-photo{width:100%;height:200px}
+  .doctor-photo{width:100%;height:220px}
+  .doctor-info{padding:20px}
+  .doctor-info h2{font-size:1.4rem}
+
+  /* 콘텐츠 섹션 */
+  .content-section{padding:24px 0}
+  .cs-title{font-size:1.3rem}
+  .info-box{padding:16px}
+  .cta-box{flex-direction:column;gap:14px;padding:20px}
+  .cta-tel{width:100%;text-align:center}
+
+  /* treat-grid 모바일 */
+  .treat-grid{grid-template-columns:1fr;gap:12px}
+  .treat-card{padding:18px}
+
+  /* 오시는길 */
+  .location-grid{grid-template-columns:1fr;gap:20px}
+
+  /* 예약 폼 */
+  #booking{padding:48px 20px!important}
+  #booking>div>div:last-child{padding:24px 18px!important}
 }
-@media(max-width:480px){
-  .hero{height:400px}
-  .slide h2{font-size:1.7rem}
-  .catch-inner{flex-direction:column;align-items:flex-start;gap:12px}
-  .trust-stats{grid-template-columns:1fr}
-  .tstat:first-child{grid-column:auto}
-  .sub-aside{margin:0 -20px;padding:0 20px}
-  .aside-nav a{padding:13px 14px;font-size:.8rem}
-}
+
+
+
 </style>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="서울연세21세기의원">
@@ -877,16 +927,38 @@ const PAGES = {
     category:'본원소개', title:'21세기만의 특별함', subtitle:'연세21세기의원만의 차별화된 치료 시스템을 소개합니다.',
     html:`
       <div class="content-section">
-        <div class="cs-tag">OUR SPECIALTY</div>
         <h2 class="cs-title">안전한 치료를 약속드립니다</h2>
-        <div class="cs-body"><p>본원은 환자의 안전과 건강을 우선시하며 특화된 치료도구들을 적극적으로 사용합니다. 철저한 원내 방역과 국제 기준의 위든시스템을 도입하여 안전한 진료 환경을 제공합니다.</p></div>
-        <div class="treat-grid">
-          <div class="treat-card"><h5> 방사선 피폭 없는 시술</h5><p>척추 시술에 흔히 사용되는 C-arm(실시간 방사선 촬영장비) 대신 인체무해한 초음파를 이용하여 최대한 정밀하게 신경과 혈관을 확인하고 안전하게 시술합니다.</p></div>
-          <div class="treat-card"><h5> 원장이 관리하는 도수치료</h5><p>초진 이후 치료사들에게 맡겨지는 기존 병원들의 도수치료와 달리, 본원은 숙련된 대표원장님의 도수치료로 시작되며 '액티베이터 건'과 같은 척추치료에 특화된 치료도구들을 적극적으로 사용합니다.</p></div>
-          <div class="treat-card"><h5> 비스테로이드 신경통증주사</h5><p>본원은 환자의 안전과 건강을 우선시하며 필요시 최소한으로 사용하여 스테로이드 주사에 의한 부작용을 최소화하기 위해 노력하고 있습니다.</p></div>
-          <div class="treat-card"><h5> 철저한 원내 방역</h5><p>국제 기준의 위든시스템을 도입하여 철저한 원내 방역을 실시합니다. 환자 여러분의 안전한 진료 환경을 위해 최선을 다합니다.</p></div>
+        <p style="font-size:.92rem;color:var(--muted);margin:10px 0 36px;line-height:1.7">연세21세기만의 특별한 치료 시스템</p>
+
+        <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:32px">
+
+          <div style="background:#fff;border:1px solid var(--border);border-radius:14px;padding:24px 26px">
+            <div style="font-size:.7rem;font-weight:700;color:var(--primary);letter-spacing:.1em;margin-bottom:8px">01</div>
+            <div style="font-size:1rem;font-weight:700;color:var(--dark);margin-bottom:8px">방사선 피폭 없는 시술</div>
+            <p style="font-size:.86rem;color:var(--muted);line-height:1.8">척추 시술에 흔히 사용되는 C-arm(실시간 방사선 촬영장비) 대신 인체무해한 초음파를 이용하여 최대한 정밀하게 신경과 혈관을 확인하고 안전하게 시술합니다.</p>
+          </div>
+
+          <div style="background:#fff;border:1px solid var(--border);border-radius:14px;padding:24px 26px">
+            <div style="font-size:.7rem;font-weight:700;color:var(--primary);letter-spacing:.1em;margin-bottom:8px">02</div>
+            <div style="font-size:1rem;font-weight:700;color:var(--dark);margin-bottom:8px">원장이 직접 관리하는 도수치료</div>
+            <p style="font-size:.86rem;color:var(--muted);line-height:1.8">초진 이후 치료사들에게 맡겨지는 기존 병원들의 도수치료와 달리, 본원은 숙련된 대표원장님의 도수치료로 시작되며 액티베이터 건과 같은 척추치료에 특화된 치료도구들을 적극적으로 사용합니다.</p>
+          </div>
+
+          <div style="background:#fff;border:1px solid var(--border);border-radius:14px;padding:24px 26px">
+            <div style="font-size:.7rem;font-weight:700;color:var(--primary);letter-spacing:.1em;margin-bottom:8px">03</div>
+            <div style="font-size:1rem;font-weight:700;color:var(--dark);margin-bottom:8px">비스테로이드 신경통증주사</div>
+            <p style="font-size:.86rem;color:var(--muted);line-height:1.8">본원은 환자의 안전과 건강을 우선시하며 필요시 최소한으로 사용하여 스테로이드 주사에 의한 부작용을 최소화하기 위해 노력하고 있습니다.</p>
+          </div>
+
+          <div style="background:#fff;border:1px solid var(--border);border-radius:14px;padding:24px 26px">
+            <div style="font-size:.7rem;font-weight:700;color:var(--primary);letter-spacing:.1em;margin-bottom:8px">04</div>
+            <div style="font-size:1rem;font-weight:700;color:var(--dark);margin-bottom:8px">철저한 원내 방역</div>
+            <p style="font-size:.86rem;color:var(--muted);line-height:1.8">국제 기준의 위든시스템을 도입하여 철저한 원내 방역을 실시합니다. 환자 여러분의 안전한 진료 환경을 위해 최선을 다합니다.</p>
+          </div>
+
         </div>
-        <div class="info-box" style="margin-top:24px">
+
+        <div class="info-box">
           <h4>보유 장비 및 시설</h4>
           <ul class="info-list">
             <li>정밀 초음파 진단기</li>
