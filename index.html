@@ -1343,6 +1343,16 @@ function submitBooking(){
   }).catch(()=>{}).finally(()=>{
     document.getElementById('booking-form-wrap').style.display='none';
     document.getElementById('booking-success').style.display='block';
+    // 예약 전환 기록
+    try{
+      var resData = JSON.parse(localStorage.getItem('y21_res')||'[]');
+      resData.push({name:name,phone:phone,email:email,dept:dept,date:date,msg:msg,at:new Date().toLocaleString('ko-KR')});
+      localStorage.setItem('y21_res', JSON.stringify(resData));
+      var ext2 = JSON.parse(localStorage.getItem('y21_extra')||'{}');
+      ext2.conversions = ext2.conversions || [];
+      ext2.conversions.push({ts:Date.now(),dept:dept});
+      localStorage.setItem('y21_extra', JSON.stringify(ext2));
+    }catch(e){}
   });
 }
 const bfDate=document.getElementById('bf-date');
@@ -1447,6 +1457,16 @@ function submitBooking(){
   }).catch(()=>{}).finally(()=>{
     document.getElementById('booking-form-wrap').style.display='none';
     document.getElementById('booking-success').style.display='block';
+    // 예약 전환 기록
+    try{
+      var resData = JSON.parse(localStorage.getItem('y21_res')||'[]');
+      resData.push({name:name,phone:phone,email:email,dept:dept,date:date,msg:msg,at:new Date().toLocaleString('ko-KR')});
+      localStorage.setItem('y21_res', JSON.stringify(resData));
+      var ext2 = JSON.parse(localStorage.getItem('y21_extra')||'{}');
+      ext2.conversions = ext2.conversions || [];
+      ext2.conversions.push({ts:Date.now(),dept:dept});
+      localStorage.setItem('y21_extra', JSON.stringify(ext2));
+    }catch(e){}
   });
 }
 const bfDate=document.getElementById('bf-date');
@@ -1466,6 +1486,109 @@ window.addEventListener('scroll', () => {
 function toggleMenu() {
   document.getElementById('mobileMenu').classList.toggle('open');
 }
+</script>
+
+<!-- 방문자 추적 -->
+<script>
+(function(){
+  // ── 방문자 기록 ──────────────────────────────
+  var KANA = 'y21_ana';
+  var KEXT = 'y21_extra';
+
+  function getAna(){ try{ return JSON.parse(localStorage.getItem(KANA)||'[]'); }catch{ return []; } }
+  function saveAna(a){ try{ localStorage.setItem(KANA, JSON.stringify(a.slice(-500))); }catch{} } // 최대 500개
+  function getExt(){ try{ return JSON.parse(localStorage.getItem(KEXT)||'{}'); }catch{ return {}; } }
+  function saveExt(o){ try{ localStorage.setItem(KEXT, JSON.stringify(o)); }catch{} }
+
+  // 유입 경로 판별
+  function getSource(){
+    var ref = document.referrer;
+    if(!ref) return '직접';
+    if(ref.includes('naver')) return '네이버';
+    if(ref.includes('google')) return '구글';
+    if(ref.includes('kakao') || ref.includes('kakaotalk')) return '카카오톡';
+    if(ref.includes('instagram')) return '인스타그램';
+    if(ref.includes('facebook')) return '페이스북';
+    return '기타';
+  }
+
+  // 디바이스 판별
+  function getDevice(){
+    var ua = navigator.userAgent;
+    if(/iPhone|iPad|iPod/.test(ua)) return 'iOS';
+    if(/Android/.test(ua)) return 'Android';
+    if(/Mobile/.test(ua)) return '모바일';
+    return 'PC';
+  }
+
+  // 현재 페이지 이름
+  function getPageName(){
+    return document.title || '홈';
+  }
+
+  // 방문 기록
+  var ana = getAna();
+  ana.push({
+    ts: Date.now(),
+    page: getPageName(),
+    source: getSource(),
+    device: getDevice()
+  });
+  saveAna(ana);
+
+  // 재방문 카운트
+  var ext = getExt();
+  ext.visitCount = (ext.visitCount || 0) + 1;
+
+  // 스크롤 깊이 추적
+  var maxScroll = 0;
+  window.addEventListener('scroll', function(){
+    var scrolled = Math.round((window.scrollY + window.innerHeight) / document.body.scrollHeight * 100);
+    if(scrolled > maxScroll){
+      maxScroll = scrolled;
+      ext.maxScroll = maxScroll;
+      saveExt(ext);
+    }
+  }, { passive: true });
+
+  // 페이지별 체류 시간
+  var pageStart = Date.now();
+  var currentPage = 'home';
+  window.addEventListener('beforeunload', function(){
+    var dwell = ext.dwell || {};
+    var elapsed = Math.round((Date.now() - pageStart) / 1000);
+    dwell[currentPage] = (dwell[currentPage] || 0) + elapsed;
+    ext.dwell = dwell;
+    saveExt(ext);
+  });
+
+  // SPA 페이지 전환 추적
+  var origShowPage = window.showPage;
+  window.showPage = function(id){
+    // 이전 페이지 체류 시간 저장
+    var dwell = ext.dwell || {};
+    var elapsed = Math.round((Date.now() - pageStart) / 1000);
+    dwell[currentPage] = (dwell[currentPage] || 0) + elapsed;
+    ext.dwell = dwell;
+    saveExt(ext);
+
+    // 새 페이지 기록
+    currentPage = id;
+    pageStart = Date.now();
+    ana = getAna();
+    ana.push({
+      ts: Date.now(),
+      page: id,
+      source: getSource(),
+      device: getDevice()
+    });
+    saveAna(ana);
+
+    if(origShowPage) origShowPage.apply(this, arguments);
+  };
+
+  saveExt(ext);
+})();
 </script>
 </body>
 </html>
