@@ -3,396 +3,795 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>서울연세21세기의원 — 이미지 관리</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet">
+<title>서울연세21세기의원 관리자</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+*{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --primary:#0D4F7C;--primary-dk:#083A5E;--primary-lt:#E8F3FA;
+  --navy:#0D6EAA;--navy-dk:#094F80;--navy-lt:#E3F0FA;
   --gold:#C09A5A;--gold-lt:#F5EDD8;
-  --cream:#FAF7F2;--cream2:#F2EDE4;
-  --dark:#1A1612;--text:#2C2218;--muted:#6B5C4E;--light:#A89482;
-  --border:#DDD0C0;--white:#fff;
-  --ok:#2D6A4F;--ok-lt:#D8F0E4;--err:#8B2220;--err-lt:#F9E0DF;
+  --cream:#FAF7F2;--bg:#F4F6F8;--border:#E0E4E8;
+  --dark:#1A1612;--text:#1A1A1A;--sub:#5A6472;--light:#9AA3AE;
+  --red:#E53935;--red-lt:#FEECEC;
+  --green:#2D6A4F;--green-lt:#D8F0E4;
+  --sidebar:230px;
 }
-body{font-family:'Noto Sans KR',sans-serif;background:var(--cream);color:var(--text);min-height:100vh}
+body{font-family:"Noto Sans KR",sans-serif;color:var(--text);background:var(--bg);min-height:100vh;display:flex}
 
-/* HEADER */
-header{background:var(--dark);border-bottom:3px solid var(--gold);padding:0 48px;height:68px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
-.h-left{display:flex;align-items:center;gap:14px}
-.h-name{font-size:.95rem;font-weight:700;color:#fff;line-height:1.2}
-.h-sub{font-size:.68rem;color:var(--gold);letter-spacing:.06em;margin-top:1px}
-.h-badge{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:6px;padding:8px 16px}
-.dot{width:7px;height:7px;border-radius:50%;background:#666;flex-shrink:0;transition:all .3s}
-.dot.on{background:#5BC48A;box-shadow:0 0 8px rgba(91,196,138,.5)}
-.dot.off{background:#E05252}
-.dot.wait{background:var(--gold);animation:blink .8s infinite}
+/* LOGIN */
+#loginScreen{position:fixed;inset:0;background:var(--navy);display:flex;align-items:center;justify-content:center;z-index:999}
+#loginScreen.hide{display:none}
+.lbox{background:#fff;width:380px;border-radius:12px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.25)}
+.lhead{background:var(--navy);padding:32px;text-align:center}
+.llogo{font-size:12px;letter-spacing:3px;font-weight:700;color:#fff;margin-bottom:4px}
+.lsub{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:2px}
+.lbody{padding:32px}
+.lfield{margin-bottom:14px}
+.llbl{font-size:11px;font-weight:700;color:var(--sub);letter-spacing:.5px;margin-bottom:6px;display:block}
+.linp{width:100%;padding:12px 14px;border:1.5px solid var(--border);font-family:inherit;font-size:14px;color:var(--text);outline:none;border-radius:6px;transition:border-color .2s}
+.linp:focus{border-color:var(--navy)}
+.lbtn{width:100%;background:var(--navy);color:#fff;border:none;padding:13px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;border-radius:6px;margin-top:6px}
+.lbtn:hover{background:var(--navy-dk)}
+.lerr{color:var(--red);font-size:12px;text-align:center;margin-top:10px;display:none}
+
+/* LAYOUT */
+#app{display:flex;width:100%;min-height:100vh}
+.sidebar{width:var(--sidebar);background:var(--dark);min-height:100vh;flex-shrink:0;display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;overflow-y:auto}
+.slogo{padding:22px 20px 18px;border-bottom:1px solid rgba(255,255,255,.07)}
+.sbrand{font-size:10px;letter-spacing:2px;font-weight:700;color:var(--gold);margin-bottom:2px}
+.ssub{font-size:10px;color:rgba(255,255,255,.25);letter-spacing:1px}
+.snav{flex:1;padding:8px 0}
+.ngrp{padding:14px 20px 5px;font-size:10px;font-weight:700;color:rgba(255,255,255,.2);letter-spacing:2px}
+.ndiv{height:1px;background:rgba(255,255,255,.06);margin:6px 0}
+.nitem{display:flex;align-items:center;gap:10px;padding:9px 20px;font-size:13px;font-weight:500;color:rgba(255,255,255,.45);cursor:pointer;transition:all .15s;border-left:3px solid transparent;user-select:none}
+.nitem:hover{color:rgba(255,255,255,.8);background:rgba(255,255,255,.04)}
+.nitem.active{color:#fff;background:rgba(192,154,90,.12);border-left-color:var(--gold)}
+.nico{font-size:14px;width:18px;text-align:center;flex-shrink:0}
+.sfoot{padding:14px 20px;border-top:1px solid rgba(255,255,255,.07)}
+.slink{display:block;font-size:12px;color:rgba(255,255,255,.3);cursor:pointer;text-decoration:none;margin-bottom:6px;transition:color .2s}
+.slink:hover{color:rgba(255,255,255,.6)}
+.ghrow{display:flex;align-items:center;gap:7px;margin-bottom:10px;padding:7px 10px;background:rgba(255,255,255,.06);border-radius:6px}
+.ghdot{width:7px;height:7px;border-radius:50%;background:#666;flex-shrink:0}
+.ghdot.on{background:#5BC48A;box-shadow:0 0 8px rgba(91,196,138,.5)}
+.ghdot.off{background:var(--red)}
+.ghdot.wait{background:var(--gold);animation:blink .8s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-.badge-txt{font-size:.76rem;color:rgba(255,255,255,.55)}
+.ghtxt{font-size:10px;color:rgba(255,255,255,.4)}
 
-/* CONTAINER */
-.wrap{max-width:1200px;margin:0 auto;padding:40px 48px 80px}
+.main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:#fff;border-bottom:1px solid var(--border);padding:0 28px;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.tbtitle{font-size:16px;font-weight:700}
+.tbright{display:flex;align-items:center;gap:12px}
+.tbbadge{font-size:11px;background:var(--navy-lt);color:var(--navy);padding:4px 12px;border-radius:20px;font-weight:700}
+.logoutbtn{font-size:12px;color:var(--light);cursor:pointer;padding:6px 12px;border:1px solid var(--border);border-radius:6px;transition:all .2s}
+.logoutbtn:hover{color:var(--red);border-color:var(--red)}
+.content{padding:24px 28px;flex:1}
 
-/* SETUP */
-.setup{background:var(--gold-lt);border:1px solid var(--gold);border-left:4px solid var(--gold);border-radius:10px;padding:24px 28px;margin-bottom:36px}
-.setup.ok{background:var(--ok-lt);border-color:#5BC48A;border-left-color:var(--ok)}
-.setup-title{font-size:.88rem;font-weight:700;color:var(--dark);margin-bottom:14px}
-.setup-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px}
-.tok-input{flex:1;min-width:220px;padding:11px 16px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:.86rem;color:var(--text);background:#fff;outline:none}
-.tok-input:focus{border-color:var(--primary)}
-.btn{padding:11px 24px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;white-space:nowrap}
-.btn:hover{background:var(--primary-dk)}
-.hint{font-size:.76rem;color:var(--muted);line-height:1.9}
-.hint a{color:var(--primary);text-decoration:underline}
-.hint code{background:rgba(0,0,0,.07);padding:1px 6px;border-radius:4px;font-size:.74rem;font-family:monospace}
+/* STAT */
+.sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.sc{background:#fff;border-radius:10px;padding:18px 20px;border:1px solid var(--border)}
+.slbl{font-size:11px;font-weight:700;color:var(--light);letter-spacing:.5px;margin-bottom:8px}
+.sval{font-size:26px;font-weight:700;color:var(--text);line-height:1}
+.ssub2{font-size:11px;color:var(--light);margin-top:5px}
+.sdot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px}
 
-/* NOTICE — 중요 안내 */
-.notice{background:var(--primary-lt);border:1px solid var(--primary);border-left:4px solid var(--primary);border-radius:8px;padding:14px 18px;margin-bottom:32px;font-size:.8rem;color:var(--primary-dk);line-height:1.8}
-.notice strong{font-weight:700}
+/* SEC */
+.sec{background:#fff;border-radius:10px;border:1px solid var(--border);margin-bottom:18px;overflow:hidden}
+.sech{padding:16px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.sectit{font-size:14px;font-weight:700}
+.secsub{font-size:12px;color:var(--light);margin-top:2px}
+.secb{padding:22px}
 
-/* SECTION */
-.sec-hd{margin:40px 0 18px;display:flex;align-items:baseline;gap:14px}
-.sec-title{font-family:'Noto Serif KR',serif;font-size:1.1rem;font-weight:600;color:var(--dark)}
-.sec-desc{font-size:.78rem;color:var(--light)}
-.sec-line{flex:1;height:1px;background:var(--border)}
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;border-radius:6px;transition:all .15s;border:none}
+.bn{background:var(--navy);color:#fff}.bn:hover{background:var(--navy-dk)}
+.bg{background:var(--gold);color:#fff}.bg:hover{opacity:.88}
+.bo{background:#fff;color:var(--text);border:1.5px solid var(--border)}.bo:hover{border-color:var(--navy);color:var(--navy)}
+.br{background:var(--red-lt);color:var(--red)}.br:hover{background:var(--red);color:#fff}
+.bgs{background:var(--green-lt);color:var(--green)}.bgs:hover{background:var(--green);color:#fff}
+.bsm{padding:5px 11px;font-size:12px}
+.bxs{padding:4px 9px;font-size:11px}
 
-/* GRID */
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+/* FORM */
+.fr3{display:grid;grid-template-columns:1fr 1fr 2fr;gap:14px}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fr{display:grid;gap:6px}
+.fl{font-size:11px;font-weight:700;color:var(--sub);letter-spacing:.3px}
+.fi,.fs,.fta{width:100%;padding:10px 12px;border:1.5px solid var(--border);font-family:inherit;font-size:13px;color:var(--text);outline:none;border-radius:6px;background:#fff;transition:border-color .2s}
+.fi:focus,.fs:focus,.fta:focus{border-color:var(--navy)}
+.fta{resize:vertical;min-height:80px}
 
-/* CARD */
-.card{background:#fff;border-radius:12px;border:1.5px solid var(--border);overflow:hidden;transition:box-shadow .2s,border-color .2s}
-.card:hover{box-shadow:0 6px 24px rgba(13,79,124,.1)}
-.card.uploading{border-color:var(--gold)}
-.card.success{border-color:#5BC48A}
-.card.fail{border-color:#E05252}
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse}
+.tbl thead th{padding:10px 14px;font-size:11px;font-weight:700;color:var(--light);text-align:left;background:var(--bg);border-bottom:1px solid var(--border)}
+.tbl tbody td{padding:12px 14px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle}
+.tbl tbody tr:last-child td{border-bottom:none}
+.tbl tbody tr:hover td{background:#FAFBFC}
 
-.thumb{height:170px;background:var(--cream2);position:relative;overflow:hidden;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.thumb img{width:100%;height:100%;object-fit:cover;object-position:50% 10%;opacity:0;transition:opacity .4s,transform .4s}
-.thumb img.loaded{opacity:1}
-.thumb:hover img.loaded{transform:scale(1.03)}
-.ph{font-size:.8rem;color:var(--light);font-weight:500;text-align:center;padding:16px;position:absolute}
-.ov{position:absolute;inset:0;background:rgba(13,79,124,.55);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;opacity:0;transition:opacity .2s}
-.thumb:hover .ov{opacity:1}
-.ov-t{font-size:.78rem;font-weight:700;color:#fff;letter-spacing:.04em}
-.ov-s{font-size:.7rem;color:rgba(255,255,255,.75)}
-.pbar{position:absolute;bottom:0;left:0;height:3px;background:var(--gold);width:0;transition:width .3s}
-.card.uploading .pbar{animation:loading 1.4s ease-in-out infinite}
-.card.success .pbar{width:100%;background:#5BC48A}
-.card.fail .pbar{width:100%;background:#E05252}
-@keyframes loading{0%{width:5%;margin-left:0}50%{width:40%}100%{width:5%;margin-left:95%}}
+/* BADGE */
+.badge{display:inline-block;padding:3px 9px;border-radius:4px;font-size:11px;font-weight:700}
+.b-gong{background:var(--navy-lt);color:var(--navy)}
+.b-evt{background:var(--gold-lt);color:#7A5000}
+.b-news{background:var(--green-lt);color:var(--green)}
+.b-res{background:#EDE9FF;color:#5B3FCC}
 
-.body{padding:16px 18px}
-.cat{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary);margin-bottom:5px}
-.cname{font-size:.92rem;font-weight:700;color:var(--dark);margin-bottom:4px}
-.fname{font-size:.74rem;color:var(--light);font-family:monospace;background:var(--cream);padding:3px 8px;border-radius:4px;display:inline-block;margin-bottom:10px}
-.cdesc{font-size:.75rem;color:var(--muted);line-height:1.6;margin-bottom:12px}
-.cmsg{font-size:.74rem;min-height:16px;font-weight:500;margin-top:6px}
-.cmsg.ok{color:var(--ok)}
-.cmsg.err{color:var(--err)}
-.cmsg.ing{color:#B07A20}
+/* IMG GRID */
+.igrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px}
+.icard{border:1.5px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer;transition:all .2s;background:var(--bg)}
+.icard:hover{border-color:var(--gold);box-shadow:0 4px 16px rgba(192,154,90,.2)}
+.icard.has{border-color:var(--navy)}
+.ithumb{aspect-ratio:4/3;overflow:hidden;position:relative;background:#e8e8e8;display:flex;align-items:center;justify-content:center}
+.ithumb img{width:100%;height:100%;object-fit:cover}
+.iph{font-size:28px;color:#ccc}
+.iov{position:absolute;inset:0;background:rgba(0,0,0,0);display:flex;align-items:center;justify-content:center;transition:background .2s}
+.icard:hover .iov{background:rgba(0,0,0,.38)}
+.iov span{display:none;color:#fff;font-size:11px;font-weight:700}
+.icard:hover .iov span{display:block}
+.ilbl{padding:7px 9px 4px;font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ist{padding:0 9px 8px;font-size:10px;color:var(--light)}
+.icard.has .ist{color:var(--navy)}
 
-.ulabel{display:block;width:100%;padding:10px;border:1.5px dashed var(--border);border-radius:8px;font-family:inherit;font-size:.82rem;font-weight:500;color:var(--muted);cursor:pointer;text-align:center;transition:all .2s;position:relative;overflow:hidden}
-.ulabel:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-lt)}
-.ulabel.off{opacity:.4;pointer-events:none}
-.ulabel input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+/* TABS */
+.tabbar{display:flex;border-bottom:2px solid var(--border);margin-bottom:20px}
+.tab{padding:9px 18px;font-size:13px;font-weight:500;cursor:pointer;color:var(--light);border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s}
+.tab.on{color:var(--navy);border-bottom-color:var(--navy);font-weight:700}
+
+/* METRIC TOGGLE */
+.mtog{display:flex;align-items:center;gap:8px;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:13px;font-weight:500;background:#fff;transition:all .15s}
+.mtog.on{border-color:var(--navy);background:var(--navy-lt)}
 
 /* TOAST */
-.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--dark);color:#fff;padding:12px 24px;border-radius:8px;font-size:.86rem;font-weight:500;opacity:0;transition:all .3s;z-index:9999;pointer-events:none;max-width:90vw;text-align:center;border-left:3px solid var(--gold)}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.toast.tok{border-left-color:#5BC48A}
-.toast.terr{border-left-color:#E05252}
+#toast{position:fixed;bottom:24px;right:24px;z-index:999;display:flex;flex-direction:column;gap:8px}
+.ti{background:var(--dark);color:#fff;padding:12px 18px;border-radius:8px;font-size:13px;font-weight:500;box-shadow:0 4px 16px rgba(0,0,0,.2);animation:si .25s ease;display:flex;align-items:center;gap:8px}
+.ti.ok::before{content:"✓";color:var(--gold)}
+.ti.err::before{content:"✕";color:var(--red)}
+@keyframes si{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
-@media(max-width:768px){
-  header,.wrap{padding-left:20px;padding-right:20px}
-  .grid{grid-template-columns:1fr}
-}
+/* MODAL */
+.mbg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+.mbg.show{display:flex}
+.modal{background:#fff;border-radius:12px;overflow:hidden;width:100%;max-width:520px;box-shadow:0 24px 64px rgba(0,0,0,.2)}
+.mh{padding:16px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.mt{font-size:15px;font-weight:700}
+.mx{background:none;border:none;font-size:22px;color:var(--light);cursor:pointer;line-height:1;padding:0 4px}
+.mb{padding:22px}
+.mf{padding:14px 22px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px}
+
+/* TOK */
+.tokbox{background:var(--gold-lt);border:1px solid var(--gold);border-left:4px solid var(--gold);border-radius:8px;padding:16px 20px;margin-bottom:20px}
+.tokbox.con{background:var(--green-lt);border-color:var(--green);border-left-color:var(--green)}
+.tokrow{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.tokinp{flex:1;min-width:200px;padding:10px 14px;border:1.5px solid var(--border);border-radius:6px;font-family:inherit;font-size:.84rem;color:var(--text);outline:none;background:#fff}
+.tokinp:focus{border-color:var(--navy)}
+.tokhint{font-size:.74rem;color:var(--sub);line-height:1.9}
+.tokhint a{color:var(--navy)}
+.tokhint code{background:rgba(0,0,0,.07);padding:1px 6px;border-radius:3px;font-size:.72rem;font-family:monospace}
+
+.page{display:none}.page.on{display:block}
+.empty{text-align:center;padding:40px 20px;color:var(--light)}
 </style>
 </head>
 <body>
 
-<header>
-  <div class="h-left">
-    <div>
-      <div class="h-name">서울연세21세기의원</div>
-      <div class="h-sub">Image Management</div>
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="lbox">
+    <div class="lhead">
+      <div class="llogo">SEOUL YONSEI 21C</div>
+      <div class="lsub">ADMIN DASHBOARD</div>
+    </div>
+    <div class="lbody">
+      <div class="lfield"><label class="llbl">관리자 ID</label><input class="linp" id="loginId" type="text" value="admin"></div>
+      <div class="lfield"><label class="llbl">비밀번호</label><input class="linp" id="loginPw" type="password" placeholder="비밀번호" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <button class="lbtn" onclick="doLogin()">로그인</button>
+      <div class="lerr" id="loginErr">아이디 또는 비밀번호가 올바르지 않습니다.</div>
     </div>
   </div>
-  <div class="h-badge">
-    <div class="dot wait" id="dot"></div>
-    <span class="badge-txt" id="badge-txt">연결 확인 중</span>
-  </div>
-</header>
-
-<div class="wrap">
-
-  <div class="setup" id="setup">
-    <div class="setup-title" id="setup-title">최초 1회 설정 — GitHub Personal Access Token 입력</div>
-    <div class="setup-row">
-      <input class="tok-input" id="tok" type="password" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
-      <button class="btn" onclick="saveToken()">저장 및 연결</button>
-    </div>
-    <div class="hint">
-      1. <a href="https://github.com/settings/tokens/new" target="_blank">github.com/settings/tokens/new</a> 접속<br>
-      2. Note 이름 입력 (예: yonsei21) &nbsp;·&nbsp; Expiration: <code>No expiration</code><br>
-      3. <code>repo</code> 체크 후 Generate token 클릭 &nbsp;·&nbsp; 생성된 토큰 복사 후 위에 입력<br>
-      <span style="color:var(--err);display:block;margin-top:6px;font-size:.74rem">토큰은 이 브라우저에만 저장됩니다. 타인과 공유하지 마세요.</span>
-    </div>
-  </div>
-
-  <div class="notice">
-    <strong>사용 방법</strong> &nbsp;—&nbsp; 카드를 클릭하거나 아래 버튼을 눌러 사진을 선택하면 <strong>자동으로 홈페이지에 반영</strong>됩니다 (약 30~60초 소요)<br>
-    사진은 각 슬롯의 <strong>고정 파일명</strong>으로 저장되므로 파일명을 신경 쓰지 않으셔도 됩니다.
-  </div>
-
-  <div class="sec-hd">
-    <div class="sec-title">메인 슬라이더</div>
-    <div class="sec-desc">홈 배너 배경 · 1400 x 640px 이상 권장</div>
-    <div class="sec-line"></div>
-  </div>
-  <div class="grid" id="g-slides"></div>
-
-  <div class="sec-hd">
-    <div class="sec-title">비수술 특화치료 카드</div>
-    <div class="sec-desc">홈 서비스 카드 · 600 x 400px 이상 권장</div>
-    <div class="sec-line"></div>
-  </div>
-  <div class="grid" id="g-programs"></div>
-
-  <div class="sec-hd">
-    <div class="sec-title">본원소개 · 의료진 · 오시는길 카드</div>
-    <div class="sec-desc">홈 하단 링크 카드 배경 · 800 x 360px 이상 권장</div>
-    <div class="sec-line"></div>
-  </div>
-  <div class="grid" id="g-links"></div>
-
 </div>
 
-<div class="toast" id="toast"></div>
+<!-- APP -->
+<div id="app" style="display:none">
+  <aside class="sidebar">
+    <div class="slogo">
+      <div class="sbrand">서울연세21세기의원</div>
+      <div class="ssub">ADMIN v1.0</div>
+    </div>
+    <nav class="snav">
+      <div class="ngrp">대시보드</div>
+      <div class="nitem active" onclick="goPage('dashboard')"><span class="nico">▣</span>대시보드</div>
+      <div class="nitem" onclick="goPage('analytics')"><span class="nico">▲</span>방문자 분석</div>
+      <div class="ndiv"></div>
+      <div class="ngrp">콘텐츠</div>
+      <div class="nitem" onclick="goPage('notice')"><span class="nico">≡</span>공지사항</div>
+      <div class="nitem" onclick="goPage('reservation')"><span class="nico">□</span>예약 신청 현황</div>
+      <div class="ndiv"></div>
+      <div class="ngrp">이미지 관리</div>
+      <div class="nitem" onclick="goPage('img-slides')"><span class="nico">◈</span>메인 슬라이더</div>
+      <div class="nitem" onclick="goPage('img-programs')"><span class="nico">◈</span>비수술 치료 카드</div>
+      <div class="nitem" onclick="goPage('img-links')"><span class="nico">◈</span>링크 카드</div>
+      <div class="ndiv"></div>
+      <div class="ngrp">설정</div>
+      <div class="nitem" onclick="goPage('settings')"><span class="nico">◎</span>설정</div>
+    </nav>
+    <div class="sfoot">
+      <div class="ghrow">
+        <div class="ghdot wait" id="ghDot"></div>
+        <span class="ghtxt" id="ghTxt">GitHub 확인 중</span>
+      </div>
+      <a class="slink" href="index.html" target="_blank">↗ 홈페이지 보기</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="tbtitle" id="pageTitle">대시보드</div>
+      <div class="tbright">
+        <span class="tbbadge">admin</span>
+        <div class="logoutbtn" onclick="doLogout()">로그아웃</div>
+      </div>
+    </div>
+    <div class="content">
+
+      <!-- 대시보드 -->
+      <div class="page on" id="page-dashboard">
+        <div class="sgrid">
+          <div class="sc"><div class="slbl">전체 공지</div><div class="sval" id="stat-notice">0</div><div class="ssub2"><span class="sdot" style="background:var(--navy)"></span>공지사항</div></div>
+          <div class="sc"><div class="slbl">예약 신청</div><div class="sval" id="stat-res">0</div><div class="ssub2"><span class="sdot" style="background:#5B3FCC"></span>누적 예약</div></div>
+          <div class="sc"><div class="slbl">업로드 이미지</div><div class="sval" id="stat-img">0</div><div class="ssub2"><span class="sdot" style="background:var(--green)"></span>등록 슬롯</div></div>
+          <div class="sc"><div class="slbl">미등록 이미지</div><div class="sval" id="stat-noimg">0</div><div class="ssub2"><span class="sdot" style="background:var(--red)"></span>기본 이미지 사용</div></div>
+        </div>
+        <div class="sec">
+          <div class="sech"><div><div class="sectit">최근 공지사항</div></div><button class="btn bo bsm" onclick="goPage('notice')">전체 보기</button></div>
+          <div style="padding:0"><table class="tbl"><thead><tr><th>카테고리</th><th>제목</th><th>날짜</th><th>관리</th></tr></thead><tbody id="dashNtList"></tbody></table></div>
+        </div>
+        <div class="sec">
+          <div class="sech"><div class="sectit">이미지 등록 현황</div></div>
+          <div class="secb"><div id="dashImgSt" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px"></div></div>
+        </div>
+      </div>
+
+      <!-- 공지사항 -->
+      <div class="page" id="page-notice">
+        <div class="sec" style="margin-bottom:18px">
+          <div class="sech"><div class="sectit">새 공지 작성</div></div>
+          <div class="secb">
+            <div class="fr3" style="margin-bottom:12px">
+              <div class="fr"><label class="fl">카테고리</label><select class="fs" id="nCat"><option>공지</option><option>이벤트</option><option>뉴스</option></select></div>
+              <div class="fr"><label class="fl">날짜</label><input class="fi" id="nDate" type="date"></div>
+              <div class="fr"><label class="fl">제목</label><input class="fi" id="nTitle" type="text" placeholder="공지 제목"></div>
+            </div>
+            <div class="fr" style="margin-bottom:14px"><label class="fl">내용</label><textarea class="fta" id="nContent" placeholder="공지 내용 (선택)"></textarea></div>
+            <div style="display:flex;justify-content:flex-end"><button class="btn bn" onclick="addNotice()">+ 공지 등록</button></div>
+          </div>
+        </div>
+        <div class="sec">
+          <div class="sech">
+            <div><div class="sectit">공지사항 목록</div><div class="secsub" id="ntCnt"></div></div>
+            <select class="fs" style="width:auto;padding:6px 10px;font-size:12px" id="ntFilter" onchange="renderNt()"><option value="">전체</option><option>공지</option><option>이벤트</option><option>뉴스</option></select>
+          </div>
+          <div style="padding:0"><table class="tbl"><thead><tr><th style="width:40px">번호</th><th style="width:80px">카테고리</th><th>제목</th><th style="width:100px">날짜</th><th style="width:100px">관리</th></tr></thead><tbody id="ntList"></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- 예약 현황 -->
+      <div class="page" id="page-reservation">
+        <div class="sgrid" style="grid-template-columns:repeat(3,1fr)">
+          <div class="sc"><div class="slbl">전체 예약</div><div class="sval" id="res-total">0</div><div class="ssub2">누적 신청</div></div>
+          <div class="sc"><div class="slbl">이번 달</div><div class="sval" id="res-month">0</div><div class="ssub2">당월 신청</div></div>
+          <div class="sc"><div class="slbl">오늘</div><div class="sval" id="res-today">0</div><div class="ssub2">당일 신청</div></div>
+        </div>
+        <div class="sec">
+          <div class="sech">
+            <div><div class="sectit">예약 신청 목록</div><div class="secsub">구글시트 연동 전 임시 저장 데이터</div></div>
+            <button class="btn br bsm" onclick="if(confirm('초기화하시겠습니까?')){localStorage.removeItem('y21_res');renderRes();toast('초기화되었습니다')}">데이터 초기화</button>
+          </div>
+          <div style="padding:0;overflow-x:auto">
+            <table class="tbl"><thead><tr><th>신청일시</th><th>이름</th><th>연락처</th><th>진료과목</th><th>희망일</th><th>증상</th></tr></thead><tbody id="resList"></tbody></table>
+          </div>
+        </div>
+      </div>
+
+      <!-- 방문자 분석 -->
+      <div class="page" id="page-analytics">
+        <div class="sec" style="margin-bottom:20px">
+          <div class="sech">
+            <div><div class="sectit">리포트 구성</div><div class="secsub">지표를 선택하고 PDF로 내보내기</div></div>
+            <button class="btn bn" onclick="exportPDF()">PDF 내보내기</button>
+          </div>
+          <div class="secb"><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px" id="mToggles"></div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px" id="anaStats"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px">
+          <div class="sec">
+            <div class="sech">
+              <div class="sectit">일별 방문자</div>
+              <select id="anaRange" class="fs" style="width:auto;padding:5px 10px;font-size:12px" onchange="renderAna()">
+                <option value="7">최근 7일</option><option value="14">최근 14일</option><option value="30">최근 30일</option>
+              </select>
+            </div>
+            <div class="secb" style="padding:16px"><canvas id="cDaily" height="200"></canvas></div>
+          </div>
+          <div class="sec">
+            <div class="sech"><div class="sectit">시간대별 방문</div></div>
+            <div class="secb" style="padding:16px"><canvas id="cHour" height="200"></canvas></div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;margin-bottom:18px">
+          <div class="sec"><div class="sech"><div class="sectit">유입 경로</div></div><div class="secb" style="padding:16px"><canvas id="cSource" height="220"></canvas></div></div>
+          <div class="sec"><div class="sech"><div class="sectit">디바이스</div></div><div class="secb" style="padding:16px"><canvas id="cDevice" height="220"></canvas></div></div>
+          <div class="sec"><div class="sech"><div class="sectit">진료과목별 예약</div></div><div class="secb" style="padding:16px"><canvas id="cDept" height="220"></canvas></div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;margin-bottom:18px">
+          <div class="sec"><div class="sech"><div class="sectit">예약 전환율</div></div><div class="secb" id="convPanel"><div class="empty">데이터 없음</div></div></div>
+          <div class="sec"><div class="sech"><div class="sectit">재방문율</div></div><div class="secb" id="revisitPanel"><div class="empty">데이터 없음</div></div></div>
+          <div class="sec"><div class="sech"><div class="sectit">스크롤 깊이</div></div><div class="secb" id="scrollPanel"><div class="empty">데이터 없음</div></div></div>
+        </div>
+        <div class="sec">
+          <div class="sech">
+            <div class="sectit">최근 방문 로그</div>
+            <button class="btn br bsm" onclick="if(confirm('방문 데이터를 초기화하시겠습니까?')){localStorage.removeItem('y21_ana');localStorage.removeItem('y21_extra');renderAna();toast('초기화되었습니다')}">데이터 초기화</button>
+          </div>
+          <div style="padding:0;max-height:320px;overflow-y:auto">
+            <table class="tbl"><thead><tr><th>시간</th><th>페이지</th><th>유입 경로</th><th>디바이스</th></tr></thead><tbody id="anaLog"></tbody></table>
+          </div>
+        </div>
+      </div>
+
+      <!-- 이미지: 슬라이더 -->
+      <div class="page" id="page-img-slides">
+        <div class="sec">
+          <div class="sech"><div><div class="sectit">메인 슬라이더</div><div class="secsub">홈 배너 이미지 3장 · 1400x640px 이상 권장</div></div></div>
+          <div class="secb"><div class="igrid" id="g-slides"></div></div>
+        </div>
+      </div>
+
+      <!-- 이미지: 비수술 카드 -->
+      <div class="page" id="page-img-programs">
+        <div class="sec">
+          <div class="sech"><div><div class="sectit">비수술 특화치료 카드</div><div class="secsub">홈 서비스 카드 이미지 3장 · 600x400px 이상 권장</div></div></div>
+          <div class="secb"><div class="igrid" id="g-programs"></div></div>
+        </div>
+      </div>
+
+      <!-- 이미지: 링크 카드 -->
+      <div class="page" id="page-img-links">
+        <div class="sec">
+          <div class="sech"><div><div class="sectit">본원소개 · 의료진 · 오시는길 카드</div><div class="secsub">홈 하단 3단 링크 배경 · 800x360px 이상 권장</div></div></div>
+          <div class="secb"><div class="igrid" id="g-links"></div></div>
+        </div>
+      </div>
+
+      <!-- 설정 -->
+      <div class="page" id="page-settings">
+        <div class="sec" style="margin-bottom:18px">
+          <div class="sech"><div class="sectit">GitHub 토큰 설정</div></div>
+          <div class="secb">
+            <div class="tokbox" id="tokBox">
+              <div style="font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:10px" id="tokTitle">이미지 업로드를 위해 GitHub 토큰을 입력하세요</div>
+              <div class="tokrow">
+                <input class="tokinp" id="tokInp" type="password" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+                <button class="btn bn" onclick="saveTok()">저장 및 연결</button>
+              </div>
+              <div class="tokhint">
+                1. <a href="https://github.com/settings/tokens/new" target="_blank">github.com/settings/tokens/new</a> 접속<br>
+                2. Note 입력 · Expiration: <code>No expiration</code> · <code>repo</code> 체크<br>
+                3. Generate token 후 복사하여 위에 입력
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sec" style="margin-bottom:18px">
+          <div class="sech"><div class="sectit">비밀번호 변경</div></div>
+          <div class="secb">
+            <div class="fr2" style="max-width:460px;margin-bottom:14px">
+              <div class="fr"><label class="fl">새 비밀번호</label><input class="fi" id="pw1" type="password" placeholder="새 비밀번호"></div>
+              <div class="fr"><label class="fl">비밀번호 확인</label><input class="fi" id="pw2" type="password" placeholder="재입력"></div>
+            </div>
+            <button class="btn bn" onclick="changePw()">비밀번호 변경</button>
+          </div>
+        </div>
+        <div class="sec">
+          <div class="sech"><div><div class="sectit">데이터 관리</div></div></div>
+          <div class="secb" style="display:flex;gap:12px;flex-wrap:wrap">
+            <button class="btn bo" onclick="exportData()">데이터 내보내기</button>
+            <button class="btn br" onclick="resetAll()">전체 초기화</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="mbg" id="editModal">
+  <div class="modal">
+    <div class="mh"><div class="mt">공지 수정</div><button class="mx" onclick="closeEdit()">×</button></div>
+    <div class="mb">
+      <input type="hidden" id="editId">
+      <div class="fr2" style="margin-bottom:12px">
+        <div class="fr"><label class="fl">카테고리</label><select class="fs" id="editCat"><option>공지</option><option>이벤트</option><option>뉴스</option></select></div>
+        <div class="fr"><label class="fl">날짜</label><input class="fi" id="editDate" type="date"></div>
+      </div>
+      <div class="fr" style="margin-bottom:12px"><label class="fl">제목</label><input class="fi" id="editTitle" type="text"></div>
+      <div class="fr"><label class="fl">내용</label><textarea class="fta" id="editContent" style="min-height:100px"></textarea></div>
+    </div>
+    <div class="mf"><button class="btn bo" onclick="closeEdit()">취소</button><button class="btn bn" onclick="saveEdit()">저장</button></div>
+  </div>
+</div>
+
+<div id="toast"></div>
 
 <script>
-const REPO   = 'pearway/yonsei21-homepage';
-const BRANCH = 'main';
-const RAW    = `https://raw.githubusercontent.com/${REPO}/${BRANCH}`;
+// ── 상수 ──
+var REPO='pearway/yonsei21-homepage', BRANCH='main';
+var RAW='https://raw.githubusercontent.com/'+REPO+'/'+BRANCH;
+var KNT='y21_notices', KPW='y21_pw', KANA='y21_ana', KEXT='y21_extra', KRES='y21_res';
 
-// ── 슬롯 정의 — 고정 파일명으로 저장
-const SLOTS = [
-  {id:'s1', g:'slides',   name:'슬라이더 1',       file:'slide1.jpg', desc:'첫 번째 메인 배너'},
-  {id:'s2', g:'slides',   name:'슬라이더 2',       file:'slide2.jpg', desc:'두 번째 메인 배너'},
-  {id:'s3', g:'slides',   name:'슬라이더 3',       file:'slide3.jpg', desc:'세 번째 메인 배너'},
-  {id:'p1', g:'programs', name:'교정 도수치료',      file:'program1.jpg', desc:'비수술 카드 이미지'},
-  {id:'p2', g:'programs', name:'체외충격파 (ESWT)', file:'program2.jpg', desc:'비수술 카드 이미지'},
-  {id:'p3', g:'programs', name:'건강검진센터',       file:'program3.jpg', desc:'비수술 카드 이미지'},
-  {id:'la', g:'links',    name:'본원소개 카드',      file:'link_about.jpg',    desc:'3단 링크 배경'},
-  {id:'ld', g:'links',    name:'의료진 카드',        file:'link_doctors.jpg',  desc:'3단 링크 배경'},
-  {id:'ll', g:'links',    name:'오시는길 카드',      file:'link_location.jpg', desc:'3단 링크 배경'},
+var IMG_SLOTS={
+  slides:  [{s:'slide1.jpg',l:'슬라이더 1'},{s:'slide2.jpg',l:'슬라이더 2'},{s:'slide3.jpg',l:'슬라이더 3'}],
+  programs:[{s:'program1.jpg',l:'교정 도수치료'},{s:'program2.jpg',l:'체외충격파(ESWT)'},{s:'program3.jpg',l:'건강검진센터'}],
+  links:   [{s:'link_about.jpg',l:'본원소개 카드'},{s:'link_doctors.jpg',l:'의료진 카드'},{s:'link_location.jpg',l:'오시는길 카드'}]
+};
+
+var DEFAULT_NT=[
+  {id:3,cat:'공지',title:'서울연세21세기의원 개원 안내',date:'2026-03-01',content:''},
+  {id:2,cat:'이벤트',title:'개원 기념 첫 방문 환자 진료비 할인 이벤트',date:'2026-03-01',content:''},
+  {id:1,cat:'공지',title:'개인정보처리방침 안내',date:'2026-03-01',content:''}
 ];
 
-const catLabel = {slides:'메인 슬라이더', programs:'비수술 치료', links:'링크 카드'};
+var MDEFS=[
+  {id:'m-daily',l:'일별 방문자',on:true},
+  {id:'m-hour',l:'시간대별 방문',on:true},
+  {id:'m-src',l:'유입 경로',on:true},
+  {id:'m-dev',l:'디바이스',on:true},
+  {id:'m-dept',l:'진료과목별 예약',on:false},
+  {id:'m-conv',l:'예약 전환율',on:false},
+  {id:'m-revisit',l:'재방문율',on:false},
+  {id:'m-scroll',l:'스크롤 깊이',on:false}
+];
+var activeM=new Set(MDEFS.filter(function(m){return m.on}).map(function(m){return m.id}));
 
-// ── 카드 렌더링
-SLOTS.forEach(s => {
-  const grid = document.getElementById('g-' + s.g);
-  const ts = Date.now();
-  grid.insertAdjacentHTML('beforeend', `
-    <div class="card" id="c-${s.id}">
-      <div class="thumb" onclick="triggerUpload('${s.id}')">
-        <img id="img-${s.id}" src="${RAW}/${s.file}?t=${ts}" alt="${s.name}">
-        <div class="ph" id="ph-${s.id}">사진 없음</div>
-        <div class="ov">
-          <div class="ov-t">사진 교체</div>
-          <div class="ov-s">클릭하여 파일 선택</div>
-        </div>
-        <div class="pbar" id="pb-${s.id}"></div>
-      </div>
-      <div class="body">
-        <div class="cat">${catLabel[s.g]}</div>
-        <div class="cname">${s.name}</div>
-        <div class="fname">${s.file}</div>
-        <div class="cdesc">${s.desc}</div>
-        <label class="ulabel off" id="btn-${s.id}">
-          파일 선택하여 업로드
-          <input type="file" accept="image/*" onchange="upload(this,'${s.id}','${s.file}')">
-        </label>
-        <div class="cmsg" id="msg-${s.id}"></div>
-      </div>
-    </div>`);
+var chartInst={};
+var PIE=['#0D6EAA','#C09A5A','#2D6A4F','#E53935','#7C4DFF','#FF6D00','#00838F'];
 
-  // 이미지 로드 처리
-  const img = document.getElementById('img-' + s.id);
-  img.addEventListener('load', () => {
-    img.classList.add('loaded');
-    document.getElementById('ph-' + s.id).style.display = 'none';
+// ── 헬퍼 ──
+function gNt(){try{return JSON.parse(localStorage.getItem(KNT))||DEFAULT_NT}catch{return DEFAULT_NT}}
+function sNt(a){localStorage.setItem(KNT,JSON.stringify(a))}
+function gPw(){return localStorage.getItem(KPW)||'1234'}
+function gTok(){return localStorage.getItem('gh_tok_y21')||''}
+function gAna(){try{return JSON.parse(localStorage.getItem(KANA))||[]}catch{return []}}
+function gRes(){try{return JSON.parse(localStorage.getItem(KRES))||[]}catch{return []}}
+function today(){return new Date().toISOString().slice(0,10)}
+function fd(d){return d?d.replace(/-/g,'.'):''}
+function allSl(){return Object.values(IMG_SLOTS).flat()}
+
+function toast(msg,t){
+  t=t||'ok';
+  var el=document.createElement('div');
+  el.className='ti '+t;el.textContent=msg;
+  document.getElementById('toast').appendChild(el);
+  setTimeout(function(){el.remove()},2800);
+}
+
+// ── 로그인 ──
+function doLogin(){
+  if(document.getElementById('loginId').value.trim()==='admin'&&document.getElementById('loginPw').value===gPw()){
+    document.getElementById('loginScreen').classList.add('hide');
+    document.getElementById('app').style.display='flex';
+    document.getElementById('nDate').value=today();
+    renderDash();checkTok();initMToggles();
+  } else {
+    document.getElementById('loginErr').style.display='block';
+    document.getElementById('loginPw').value='';
+  }
+}
+function doLogout(){
+  document.getElementById('loginScreen').classList.remove('hide');
+  document.getElementById('app').style.display='none';
+  document.getElementById('loginPw').value='';
+  document.getElementById('loginErr').style.display='none';
+}
+
+// ── 페이지 ──
+var PTITLES={dashboard:'대시보드',notice:'공지사항',reservation:'예약 신청 현황',analytics:'방문자 분석','img-slides':'메인 슬라이더','img-programs':'비수술 치료 카드','img-links':'링크 카드',settings:'설정'};
+function goPage(id){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('on')});
+  document.querySelectorAll('.nitem').forEach(function(n){n.classList.remove('active')});
+  var pg=document.getElementById('page-'+id); if(pg) pg.classList.add('on');
+  document.querySelectorAll('.nitem').forEach(function(n){if(n.getAttribute('onclick')&&n.getAttribute('onclick').indexOf("'"+id+"'")>-1)n.classList.add('active')});
+  document.getElementById('pageTitle').textContent=PTITLES[id]||id;
+  if(id==='dashboard')renderDash();
+  if(id==='notice')renderNt();
+  if(id==='reservation')renderRes();
+  if(id==='analytics'){renderAna();loadChartJS();}
+  if(id==='img-slides')renderIG('slides','g-slides');
+  if(id==='img-programs')renderIG('programs','g-programs');
+  if(id==='img-links')renderIG('links','g-links');
+  if(id==='settings')updTokBox();
+}
+
+// ── GitHub 토큰 ──
+function saveTok(){
+  var v=document.getElementById('tokInp').value.trim();
+  if(!v){toast('토큰을 입력해주세요','err');return;}
+  localStorage.setItem('gh_tok_y21',v);checkTok();
+}
+async function checkTok(){
+  var t=gTok(), dot=document.getElementById('ghDot'), txt=document.getElementById('ghTxt');
+  if(!t){dot.className='ghdot off';txt.textContent='토큰 없음';setImgOff(true);return;}
+  dot.className='ghdot wait';txt.textContent='연결 확인 중...';
+  try{
+    var r=await fetch('https://api.github.com/repos/'+REPO,{headers:{Authorization:'Bearer '+t,Accept:'application/vnd.github+json'}});
+    if(r.ok){dot.className='ghdot on';txt.textContent='GitHub 연결됨';setImgOff(false);}
+    else throw new Error();
+  }catch{dot.className='ghdot off';txt.textContent='토큰 오류';setImgOff(true);}
+}
+function setImgOff(off){
+  document.querySelectorAll('.iupbtn').forEach(function(b){b.disabled=off;b.style.opacity=off?'.4':'1'});
+}
+function updTokBox(){
+  var con=document.getElementById('ghDot').classList.contains('on');
+  document.getElementById('tokBox').classList.toggle('con',con);
+  document.getElementById('tokTitle').textContent=con?'GitHub 연결 완료 — 사진 업로드 시 자동으로 홈페이지에 반영됩니다':'이미지 업로드를 위해 GitHub 토큰을 입력하세요';
+}
+
+// ── 이미지 그리드 ──
+function renderIG(gkey,cid){
+  var slots=IMG_SLOTS[gkey]||[], el=document.getElementById(cid);
+  if(!el) return;
+  el.innerHTML='';
+  slots.forEach(function(s){
+    var prev=localStorage.getItem('iprv_'+s.s);
+    var card=document.createElement('div');
+    card.className='icard'+(prev?' has':'');
+    card.innerHTML='<div class="ithumb">'
+      +(prev?'<img src="'+prev+'" alt="">':'<div class="iph">+</div>')
+      +'<div class="iov"><span>클릭하여 교체</span></div>'
+      +'</div>'
+      +'<div class="ilbl">'+s.l+'</div>'
+      +'<div class="ist">'+(prev?'✓ 업로드됨':'기본 이미지')+'</div>'
+      +'<div style="padding:0 9px 10px">'
+      +'<button class="btn bo bxs iupbtn" style="width:100%" onclick="document.getElementById(\'fi_'+s.s.replace(/\./g,'_')+'\').click()">사진 교체</button>'
+      +'<input type="file" id="fi_'+s.s.replace(/\./g,'_')+'" accept="image/*" style="display:none" onchange="upToGH(this,\''+s.s+'\',\''+gkey+'\',\''+cid+'\')">'
+      +'</div>';
+    el.appendChild(card);
   });
-  img.addEventListener('error', () => {
-    img.style.display = 'none';
-    document.getElementById('ph-' + s.id).style.display = 'block';
+  setImgOff(!gTok());
+}
+
+async function upToGH(inp,fn,gkey,cid){
+  var file=inp.files[0]; if(!file) return;
+  var tok=gTok();
+  if(!tok){toast('먼저 GitHub 토큰을 설정해주세요','err');return;}
+  var fr2=new FileReader();
+  fr2.onload=function(e){localStorage.setItem('iprv_'+fn,e.target.result);};
+  fr2.readAsDataURL(file);
+  toast('업로드 중...');
+  try{
+    var b64=await new Promise(function(res,rej){var r=new FileReader();r.onload=function(e){res(e.target.result.split(',')[1])};r.onerror=rej;r.readAsDataURL(file)});
+    var sha=null;
+    try{var sr=await fetch('https://api.github.com/repos/'+REPO+'/contents/'+fn+'?ref='+BRANCH,{headers:{Authorization:'Bearer '+tok,Accept:'application/vnd.github+json'}});if(sr.ok){var sd=await sr.json();sha=sd.sha;}}catch{}
+    var body={message:'이미지 교체: '+fn,content:b64,branch:BRANCH};
+    if(sha) body.sha=sha;
+    var r=await fetch('https://api.github.com/repos/'+REPO+'/contents/'+fn,{method:'PUT',headers:{Authorization:'Bearer '+tok,Accept:'application/vnd.github+json','Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(r.ok){toast(fn+' 완료 — 30초 후 홈페이지 반영');renderIG(gkey,cid);}
+    else{var e=await r.json();throw new Error(e.message||'HTTP '+r.status);}
+  }catch(e){toast('실패: '+e.message,'err');}
+  inp.value='';
+}
+
+// ── 대시보드 ──
+function renderDash(){
+  var nt=gNt(), res=gRes(), all=allSl();
+  var up=all.filter(function(s){return localStorage.getItem('iprv_'+s.s)}).length;
+  document.getElementById('stat-notice').textContent=nt.filter(function(n){return n.cat==='공지'}).length;
+  document.getElementById('stat-res').textContent=res.length;
+  document.getElementById('stat-img').textContent=up;
+  document.getElementById('stat-noimg').textContent=all.length-up;
+  var tb=document.getElementById('dashNtList');
+  var recent=nt.slice(0,5);
+  if(!recent.length){tb.innerHTML='<tr><td colspan="4" class="empty">공지사항이 없습니다</td></tr>';return;}
+  tb.innerHTML=recent.map(function(n){return '<tr><td><span class="badge b-'+{공지:'gong',이벤트:'evt',뉴스:'news'}[n.cat]+'">'+n.cat+'</span></td><td style="max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+n.title+'</td><td style="color:var(--light)">'+fd(n.date)+'</td><td><button class="btn bo bxs" onclick="openEdit('+n.id+')">수정</button></td></tr>';}).join('');
+  var st=document.getElementById('dashImgSt');
+  var grps=[{l:'메인 슬라이더',k:'slides'},{l:'비수술 치료 카드',k:'programs'},{l:'링크 카드',k:'links'}];
+  st.innerHTML=grps.map(function(g){
+    var sl=IMG_SLOTS[g.k]||[],done=sl.filter(function(s){return localStorage.getItem('iprv_'+s.s)}).length,pct=sl.length?Math.round(done/sl.length*100):0;
+    var col=pct===100?'var(--navy)':pct>50?'var(--gold)':'var(--red)';
+    return '<div style="background:var(--bg);border-radius:6px;padding:12px 14px;border:1px solid var(--border)">'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="font-size:12px;font-weight:600">'+g.l+'</span><span style="font-size:11px;color:'+col+';font-weight:700">'+done+'/'+sl.length+'</span></div>'
+      +'<div style="height:4px;background:#e8e8e8;border-radius:2px"><div style="height:4px;background:'+col+';border-radius:2px;width:'+pct+'%;transition:width .4s"></div></div></div>';
+  }).join('');
+}
+
+// ── 공지 CRUD ──
+function renderNt(){
+  var f=document.getElementById('ntFilter').value||'';
+  var nt=gNt().filter(function(n){return !f||n.cat===f});
+  document.getElementById('ntCnt').textContent='전체 '+gNt().length+'건';
+  var tb=document.getElementById('ntList');
+  if(!nt.length){tb.innerHTML='<tr><td colspan="5"><div class="empty">공지사항이 없습니다</div></td></tr>';return;}
+  tb.innerHTML=nt.map(function(n){
+    var bc={공지:'gong',이벤트:'evt',뉴스:'news'}[n.cat];
+    return '<tr><td style="color:var(--light);text-align:center">'+n.id+'</td><td><span class="badge b-'+bc+'">'+n.cat+'</span></td><td style="font-weight:500">'+n.title+'</td><td style="color:var(--light)">'+fd(n.date)+'</td><td><div style="display:flex;gap:5px"><button class="btn bo bxs" onclick="openEdit('+n.id+')">수정</button><button class="btn br bxs" onclick="delNt('+n.id+')">삭제</button></div></td></tr>';
+  }).join('');
+}
+function addNotice(){
+  var cat=document.getElementById('nCat').value,date=document.getElementById('nDate').value,title=document.getElementById('nTitle').value.trim(),content=document.getElementById('nContent').value.trim();
+  if(!title){toast('제목을 입력해 주세요','err');return;}
+  var nt=gNt(),mx=nt.reduce(function(m,n){return Math.max(m,n.id)},0);
+  nt.unshift({id:mx+1,cat:cat,title:title,date:date,content:content});
+  sNt(nt);renderNt();renderDash();
+  document.getElementById('nTitle').value='';document.getElementById('nContent').value='';
+  toast('공지가 등록되었습니다');
+}
+function delNt(id){
+  if(!confirm('삭제하시겠습니까?')) return;
+  sNt(gNt().filter(function(n){return n.id!==id}));
+  renderNt();renderDash();toast('삭제되었습니다');
+}
+function openEdit(id){
+  var n=gNt().find(function(x){return x.id===id}); if(!n) return;
+  document.getElementById('editId').value=id;
+  document.getElementById('editCat').value=n.cat;
+  document.getElementById('editDate').value=n.date;
+  document.getElementById('editTitle').value=n.title;
+  document.getElementById('editContent').value=n.content||'';
+  document.getElementById('editModal').classList.add('show');
+}
+function closeEdit(){document.getElementById('editModal').classList.remove('show')}
+function saveEdit(){
+  var id=parseInt(document.getElementById('editId').value);
+  var nt=gNt(),n=nt.find(function(x){return x.id===id}); if(!n) return;
+  n.cat=document.getElementById('editCat').value;
+  n.date=document.getElementById('editDate').value;
+  n.title=document.getElementById('editTitle').value.trim();
+  n.content=document.getElementById('editContent').value.trim();
+  sNt(nt);renderNt();renderDash();closeEdit();toast('수정되었습니다');
+}
+
+// ── 예약 현황 ──
+function renderRes(){
+  var res=gRes(),td=today(),mo=td.slice(0,7);
+  document.getElementById('res-total').textContent=res.length;
+  document.getElementById('res-month').textContent=res.filter(function(r){return (r.at||'').startsWith(mo)}).length;
+  document.getElementById('res-today').textContent=res.filter(function(r){return (r.at||'').startsWith(td)}).length;
+  var tb=document.getElementById('resList');
+  if(!res.length){tb.innerHTML='<tr><td colspan="6" class="empty">예약 신청 데이터가 없습니다</td></tr>';return;}
+  tb.innerHTML=res.slice().reverse().map(function(r){
+    return '<tr><td style="color:var(--light);font-size:12px">'+r.at+'</td><td style="font-weight:500">'+r.name+'</td><td>'+r.phone+'</td><td><span class="badge b-res">'+r.dept+'</span></td><td>'+r.date+'</td><td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:var(--sub)">'+r.msg+'</td></tr>';
+  }).join('');
+}
+
+// ── 방문자 분석 ──
+var cjsLoaded=false;
+function loadChartJS(){
+  if(cjsLoaded||window.Chart) return;
+  var s=document.createElement('script');
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js';
+  s.onload=function(){cjsLoaded=true;renderAna()};
+  document.head.appendChild(s);
+}
+function initMToggles(){
+  var el=document.getElementById('mToggles'); if(!el) return;
+  el.innerHTML=MDEFS.map(function(m){
+    var on=activeM.has(m.id);
+    return '<label class="mtog'+(on?' on':'')+'" id="mt-'+m.id+'">'
+      +'<input type="checkbox"'+(on?' checked':'')+' style="accent-color:var(--navy);width:14px;height:14px" onchange="togM(\''+m.id+'\',this.checked)">'
+      +m.l+'</label>';
+  }).join('');
+}
+function togM(id,on){
+  if(on)activeM.add(id);else activeM.delete(id);
+  var el=document.getElementById('mt-'+id);
+  if(el)el.classList.toggle('on',on);
+  renderAna();
+}
+function renderAna(){
+  var days=parseInt((document.getElementById('anaRange')||{value:'7'}).value||'7');
+  var cut=Date.now()-days*86400000;
+  var all=gAna(),flt=all.filter(function(d){return d.ts>=cut});
+  var ex={};try{ex=JSON.parse(localStorage.getItem(KEXT)||'{}')}catch{}
+  var res=gRes();
+  // 통계카드
+  var as=document.getElementById('anaStats');
+  if(as){
+    var td=today(),mc=all.filter(function(d){return d.ts>=Date.now()-30*86400000}).length;
+    var tc=all.filter(function(d){return new Date(d.ts).toISOString().slice(0,10)===td}).length;
+    var cv=flt.length?((res.filter(function(r){return new Date(r.at||0).getTime()>=cut}).length/flt.length)*100).toFixed(1)+'%':'0%';
+    as.innerHTML='<div class="sc"><div class="slbl">오늘 방문</div><div class="sval">'+tc+'</div></div>'
+      +'<div class="sc"><div class="slbl">기간 방문</div><div class="sval">'+flt.length+'</div><div class="ssub2">최근 '+days+'일</div></div>'
+      +'<div class="sc"><div class="slbl">월간 방문</div><div class="sval">'+mc+'</div><div class="ssub2">최근 30일</div></div>'
+      +'<div class="sc"><div class="slbl">예약 전환율</div><div class="sval" style="font-size:18px">'+cv+'</div></div>';
+  }
+  if(!window.Chart) return;
+  // 일별
+  if(activeM.has('m-daily')){
+    var dm={};for(var i=days-1;i>=0;i--){var d=new Date(Date.now()-i*86400000);dm[d.toISOString().slice(0,10)]=0;}
+    flt.forEach(function(d){var k=new Date(d.ts).toISOString().slice(0,10);if(dm[k]!==undefined)dm[k]++;});
+    rChart('cDaily','bar',Object.keys(dm).map(function(k){return k.slice(5)}),Object.values(dm),'#0D6EAA');
+  }
+  // 시간대
+  if(activeM.has('m-hour')){
+    var hr=Array(24).fill(0);flt.forEach(function(d){hr[new Date(d.ts).getHours()]++;});
+    rChart('cHour','bar',Array.from({length:24},function(_,i){return i+'시'}),hr,'#C09A5A');
+  }
+  // 유입
+  if(activeM.has('m-src')){var src={};flt.forEach(function(d){var s=d.source||'직접';src[s]=(src[s]||0)+1});if(Object.keys(src).length)rDnt('cSource',Object.keys(src),Object.values(src));}
+  // 디바이스
+  if(activeM.has('m-dev')){var dev={};flt.forEach(function(d){var dv=d.device||'PC';dev[dv]=(dev[dv]||0)+1});if(Object.keys(dev).length)rDnt('cDevice',Object.keys(dev),Object.values(dev));}
+  // 진료과목
+  if(activeM.has('m-dept')){var dpt={};res.forEach(function(r){dpt[r.dept]=(dpt[r.dept]||0)+1});if(Object.keys(dpt).length)rDnt('cDept',Object.keys(dpt),Object.values(dpt));}
+  // 전환율
+  var cp=document.getElementById('convPanel');
+  if(cp&&activeM.has('m-conv')){var rv=res.filter(function(r){return new Date(r.at||0).getTime()>=cut}),rt=flt.length?((rv.length/flt.length)*100).toFixed(1):0;cp.innerHTML='<div style="padding:8px"><div style="display:flex;align-items:baseline;gap:8px;margin-bottom:10px"><span style="font-size:40px;font-weight:700;color:var(--navy)">'+rt+'</span><span style="font-size:16px;color:var(--sub)">% 전환율</span></div><div style="height:8px;background:#eee;border-radius:4px"><div style="height:8px;background:var(--navy);border-radius:4px;width:'+Math.min(rt,100)+'%;transition:width .6s"></div></div><div style="font-size:11px;color:var(--light);margin-top:8px">방문 '+flt.length+'명 중 예약 '+rv.length+'건</div></div>';}
+  // 재방문율
+  var rp=document.getElementById('revisitPanel');
+  if(rp&&activeM.has('m-revisit')){var vc=ex.visitCount||0,rrt=vc>1?Math.min(Math.round((vc-1)/vc*100),99):0;rp.innerHTML='<div style="padding:8px"><div style="display:flex;align-items:baseline;gap:8px;margin-bottom:10px"><span style="font-size:40px;font-weight:700;color:var(--navy)">'+rrt+'</span><span style="font-size:16px;color:var(--sub)">% 재방문율</span></div><div style="font-size:11px;color:var(--light);margin-top:8px">누적 방문: '+vc+'회</div></div>';}
+  // 스크롤
+  var sp=document.getElementById('scrollPanel');
+  if(sp&&activeM.has('m-scroll')){var ms=ex.maxScroll||0;sp.innerHTML='<div style="padding:8px"><div style="display:flex;align-items:baseline;gap:8px;margin-bottom:10px"><span style="font-size:40px;font-weight:700;color:var(--navy)">'+ms+'</span><span style="font-size:16px;color:var(--sub)">% 스크롤</span></div><div style="height:8px;background:#eee;border-radius:4px"><div style="height:8px;background:var(--navy);border-radius:4px;width:'+ms+'%;transition:width .6s"></div></div></div>';}
+  // 로그
+  var lg=document.getElementById('anaLog');
+  if(lg){var rc=all.slice().reverse().slice(0,50);if(!rc.length){lg.innerHTML='<tr><td colspan="4" class="empty">방문 데이터 없음</td></tr>';return;}lg.innerHTML=rc.map(function(d){return '<tr><td style="color:var(--light);font-size:12px">'+new Date(d.ts).toLocaleString('ko-KR')+'</td><td>'+d.page+'</td><td>'+d.source+'</td><td>'+d.device+'</td></tr>';}).join('');}
+}
+function rChart(id,type,labels,data,color){
+  var c=document.getElementById(id);if(!c||!window.Chart)return;
+  if(chartInst[id])chartInst[id].destroy();
+  chartInst[id]=new Chart(c,{type:type,data:{labels:labels,datasets:[{data:data,backgroundColor:type==='bar'?color:PIE,borderRadius:type==='bar'?4:0,borderWidth:type==='bar'?0:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:type==='bar'?{y:{beginAtZero:true,grid:{color:'rgba(0,0,0,.04)'},ticks:{font:{size:11}}},x:{grid:{display:false},ticks:{font:{size:10}}}}:{}}});
+}
+function rDnt(id,labels,data){
+  var c=document.getElementById(id);if(!c||!window.Chart)return;
+  if(chartInst[id])chartInst[id].destroy();
+  chartInst[id]=new Chart(c,{type:'doughnut',data:{labels:labels,datasets:[{data:data,backgroundColor:PIE.slice(0,labels.length),borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11},padding:10}}}}});
+}
+
+// ── PDF ──
+function exportPDF(){
+  var al=MDEFS.filter(function(m){return activeM.has(m.id)});
+  if(!al.length){toast('지표를 선택해 주세요','err');return;}
+  var days=parseInt((document.getElementById('anaRange')||{value:'7'}).value||'7');
+  var cut=Date.now()-days*86400000,flt=gAna().filter(function(d){return d.ts>=cut});
+  var ds=new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'2-digit',day:'2-digit'});
+  var secs='';
+  al.forEach(function(m){
+    var h='';
+    if(m.id==='m-daily')h='<h3>일별 방문자</h3><p>최근 '+days+'일 | 총 '+flt.length+'회</p>';
+    else if(m.id==='m-src'){var s={};flt.forEach(function(d){var sv=d.source||'직접';s[sv]=(s[sv]||0)+1});h='<h3>유입 경로</h3><table border="1" cellpadding="6" style="border-collapse:collapse;width:100%"><tr><th>경로</th><th>방문</th><th>비율</th></tr>'+Object.entries(s).sort(function(a,b){return b[1]-a[1]}).map(function(e){return '<tr><td>'+e[0]+'</td><td>'+e[1]+'</td><td>'+(flt.length?(e[1]/flt.length*100).toFixed(1)+'%':'0%')+'</td></tr>'}).join('')+'</table>';}
+    else if(m.id==='m-dev'){var dv={};flt.forEach(function(d){var v=d.device||'PC';dv[v]=(dv[v]||0)+1});h='<h3>디바이스</h3><table border="1" cellpadding="6" style="border-collapse:collapse;width:100%"><tr><th>디바이스</th><th>방문</th></tr>'+Object.entries(dv).map(function(e){return '<tr><td>'+e[0]+'</td><td>'+e[1]+'</td></tr>'}).join('')+'</table>';}
+    else if(m.id==='m-conv'){var rv=gRes().filter(function(r){return new Date(r.at||0).getTime()>=cut});h='<h3>예약 전환율</h3><p>방문 '+flt.length+'명 | 예약 '+rv.length+'건 | '+(flt.length?(rv.length/flt.length*100).toFixed(1):'0')+'%</p>';}
+    else if(m.id==='m-dept'){var dp={};gRes().forEach(function(r){dp[r.dept]=(dp[r.dept]||0)+1});h='<h3>진료과목별 예약</h3><table border="1" cellpadding="6" style="border-collapse:collapse;width:100%"><tr><th>과목</th><th>예약수</th></tr>'+Object.entries(dp).sort(function(a,b){return b[1]-a[1]}).map(function(e){return '<tr><td>'+e[0]+'</td><td>'+e[1]+'</td></tr>'}).join('')+'</table>';}
+    else h='<h3>'+m.l+'</h3><p>데이터 없음</p>';
+    secs+='<div style="margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid #eee">'+h+'</div>';
   });
-});
-
-// ── 토큰 관리
-function getToken(){ return localStorage.getItem('gh_tok_y21') || '' }
-
-function saveToken(){
-  const v = document.getElementById('tok').value.trim();
-  if(!v){ toast('토큰을 입력해주세요', 'terr'); return }
-  localStorage.setItem('gh_tok_y21', v);
-  checkToken();
+  var w=window.open('','_blank');
+  w.document.write('<html><head><title>리포트 — '+ds+'</title><style>body{font-family:sans-serif;padding:40px;color:#1A1A1A;max-width:800px;margin:0 auto}h1{font-size:24px;font-weight:700;margin-bottom:4px;color:#0D6EAA}.sub{font-size:13px;color:#888;margin-bottom:36px}h3{font-size:16px;font-weight:700;margin-bottom:10px}table{border-collapse:collapse;width:100%}th,td{padding:8px 12px;text-align:left}th{background:#f5f5f5}</style></head><body><h1>방문자 분석 리포트 — 서울연세21세기의원</h1><div class="sub">생성일: '+ds+' | 기간: 최근 '+days+'일 | 지표: '+al.length+'개</div>'+secs+'<script>window.onload=function(){window.print()}<\/script></body></html>');
+  w.document.close();toast('PDF 창이 열렸습니다');
 }
 
-async function checkToken(){
-  const t = getToken();
-  const dot  = document.getElementById('dot');
-  const btxt = document.getElementById('badge-txt');
-  const setup = document.getElementById('setup');
-  const stitle = document.getElementById('setup-title');
-
-  if(!t){
-    dot.className = 'dot off';
-    btxt.textContent = '토큰 없음';
-    setAllOff(true);
-    return;
-  }
-
-  dot.className = 'dot wait';
-  btxt.textContent = '연결 확인 중...';
-
-  try {
-    const r = await fetch(`https://api.github.com/repos/${REPO}`, {
-      headers:{ Authorization:`Bearer ${t}`, Accept:'application/vnd.github+json' }
-    });
-    if(r.ok){
-      dot.className = 'dot on';
-      btxt.textContent = 'GitHub 연결됨';
-      setup.classList.add('ok');
-      stitle.textContent = '연결 완료 — 사진을 업로드하면 즉시 홈페이지에 반영됩니다';
-      document.getElementById('tok').value = '';
-      document.getElementById('tok').placeholder = '연결됨 (재설정하려면 새 토큰 입력)';
-      setAllOff(false);
-    } else {
-      throw new Error('auth');
-    }
-  } catch(e){
-    dot.className = 'dot off';
-    btxt.textContent = '토큰 오류';
-    toast('토큰이 올바르지 않습니다. 다시 확인해주세요.', 'terr');
-    setAllOff(true);
-  }
+// ── 설정 ──
+function changePw(){
+  var p1=document.getElementById('pw1').value,p2=document.getElementById('pw2').value;
+  if(!p1){toast('비밀번호를 입력해 주세요','err');return;}
+  if(p1!==p2){toast('비밀번호가 일치하지 않습니다','err');return;}
+  localStorage.setItem(KPW,p1);
+  document.getElementById('pw1').value='';document.getElementById('pw2').value='';
+  toast('비밀번호가 변경되었습니다');
+}
+function exportData(){
+  var d={notices:gNt(),analytics:gAna(),reservations:gRes()};
+  var b=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='yonsei21-'+today()+'.json';a.click();
+  toast('데이터를 내보냈습니다');
+}
+function resetAll(){
+  if(!confirm('모든 데이터를 초기화하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) return;
+  [KNT,KANA,KEXT,KRES].forEach(function(k){localStorage.removeItem(k)});
+  renderDash();toast('초기화되었습니다');
 }
 
-function setAllOff(off){
-  document.querySelectorAll('.ulabel').forEach(b => b.classList.toggle('off', off));
-}
-
-// ── 업로드 핵심 로직
-// 사용자가 어떤 파일명으로 올리든 → 고정 파일명(file 인수)으로 GitHub에 저장
-function triggerUpload(id){
-  if(!getToken()){ toast('먼저 GitHub 토큰을 설정해주세요', 'terr'); return }
-  document.querySelector(`#c-${id} input[type=file]`).click();
-}
-
-async function upload(input, id, fixedFilename){
-  const file = input.files[0];
-  if(!file) return;
-  const token = getToken();
-  if(!token){ toast('먼저 GitHub 토큰을 설정해주세요', 'terr'); return }
-
-  // 즉시 미리보기
-  const fr = new FileReader();
-  fr.onload = e => {
-    const img = document.getElementById('img-' + id);
-    img.src = e.target.result;
-    img.classList.add('loaded');
-    img.style.display = 'block';
-    document.getElementById('ph-' + id).style.display = 'none';
-  };
-  fr.readAsDataURL(file);
-
-  setCard(id, 'uploading', '업로드 중...');
-
-  try {
-    // base64 변환
-    const b64 = await toBase64(file);
-    // 기존 파일 SHA (덮어쓰기용)
-    const sha = await getSha(fixedFilename, token);
-
-    const body = {
-      message: `이미지 교체: ${fixedFilename}`,
-      content: b64,
-      branch: BRANCH
-    };
-    if(sha) body.sha = sha;
-
-    const r = await fetch(
-      `https://api.github.com/repos/${REPO}/contents/${fixedFilename}`,
-      {
-        method: 'PUT',
-        headers:{
-          Authorization: `Bearer ${token}`,
-          Accept: 'application/vnd.github+json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-      }
-    );
-
-    if(r.ok){
-      setCard(id, 'success', '업로드 완료 — 홈페이지 반영 중 (30~60초)');
-      toast(`${fixedFilename} 저장 완료. 잠시 후 홈페이지에 반영됩니다.`, 'tok');
-      setTimeout(() => setCard(id, '', ''), 90000);
-    } else {
-      const err = await r.json();
-      throw new Error(err.message || `HTTP ${r.status}`);
-    }
-  } catch(e){
-    setCard(id, 'fail', `실패 — ${e.message}`);
-    toast(`업로드 실패: ${e.message}`, 'terr');
-  }
-  input.value = '';
-}
-
-async function getSha(filename, token){
-  try {
-    const r = await fetch(
-      `https://api.github.com/repos/${REPO}/contents/${filename}?ref=${BRANCH}`,
-      { headers:{ Authorization:`Bearer ${token}`, Accept:'application/vnd.github+json' }}
-    );
-    if(r.ok){ const d = await r.json(); return d.sha }
-  } catch(e){}
-  return null;
-}
-
-function toBase64(file){
-  return new Promise((res, rej) => {
-    const r = new FileReader();
-    r.onload  = e => res(e.target.result.split(',')[1]);
-    r.onerror = rej;
-    r.readAsDataURL(file);
-  });
-}
-
-// ── UI
-function setCard(id, state, msg){
-  const card = document.getElementById('c-' + id);
-  const el   = document.getElementById('msg-' + id);
-  if(card){ card.classList.remove('uploading','success','fail'); if(state) card.classList.add(state) }
-  if(el){
-    el.textContent = msg;
-    el.className = 'cmsg' + (state==='success' ? ' ok' : state==='fail' ? ' err' : state==='uploading' ? ' ing' : '');
-  }
-}
-
-let _tt;
-function toast(msg, type=''){
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.className = `toast ${type} show`;
-  clearTimeout(_tt);
-  _tt = setTimeout(() => el.classList.remove('show'), 5000);
-}
-
-// 초기화
-checkToken();
+// ── 초기화 ──
+document.addEventListener('keydown',function(e){if(e.key==='Enter'&&!document.getElementById('loginScreen').classList.contains('hide'))doLogin()});
 </script>
 </body>
 </html>
