@@ -35,8 +35,7 @@
   --serif:'Noto Serif KR',serif;--sans:'Noto Sans KR',sans-serif;
   --dm:'DM Serif Display',serif;
 }
-html{scroll-behavior:smooth}
-body{font-family:var(--sans);color:var(--ink);background:var(--white);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+html{overflow:auto}body{font-family:var(--sans);color:var(--ink);background:var(--white);overflow-x:hidden;-webkit-font-smoothing:antialiased}
 a{text-decoration:none;color:inherit}
 ul{list-style:none}
 button{cursor:pointer;border:none;background:none;font-family:inherit}
@@ -336,6 +335,8 @@ footer{padding:32px 40px;background:var(--ink);border-top:1px solid rgba(255,255
   .sns-g{flex-direction:column;align-items:flex-start}
 }
 </style>
+<!-- Lenis smooth scroll -->
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 </head>
 <body>
 
@@ -385,7 +386,7 @@ footer{padding:32px 40px;background:var(--ink);border-top:1px solid rgba(255,255
         <div class="hc-ico">🏥</div>
         <div class="hc-tag">핵심 치료 01</div>
         <div class="hc-title">외상처치 &amp; 응급수술</div>
-        <div class="hc-desc">당일 수술·당일 퇴원 원칙. 창상·열상 응급화혈을 신속하게 처치합니다.</div>
+        <div class="hc-desc">당일 수술·당일 퇴원 원칙. 창상·열상 및 화상 환자들을 신속하게 처치합니다.</div>
         <div class="hc-link">자세히 보기 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
       <div class="hcard gc" onclick="openM('stem')">
@@ -604,13 +605,13 @@ footer{padding:32px 40px;background:var(--ink);border-top:1px solid rgba(255,255
     <div class="tc fu">
       <div class="tc-n">08</div>
       <div class="tc-title">골다공증</div>
-      <div class="tc-d">1년에 1번의 검사로 뼈 건강을 관리. 골밀도 개선에 최선을 다하며 만성질환으로 단계별 관리합니다.</div>
+      <div class="tc-d">1년에 1번의 검사로 뼈 건강을 관리. 골밀도 개선에 최선을 다하며 정형외과 파트의 만성적으로 단계별로 체계적으로 관리합니다.</div>
       <div class="tc-tags"><span class="tag">골절</span><span class="tag">VitD결핍</span><span class="tag">쿠심병</span><span class="tag">2차성골다공증</span></div>
     </div>
     <div class="tc fu">
       <div class="tc-n">09</div>
       <div class="tc-title">내과 · 건강검진 · 보건증</div>
-      <div class="tc-d">고혈압·당뇨·고지혈증 등 만성질환과 공단검진, 보건증 발급(식품위생업 등)까지 원스톱 진료합니다.</div>
+      <div class="tc-d">고혈압·당뇨·고지혈증 등의 만성질환을 관리하고 다양한 내용의 건강검진(보건증 포함)을 통해서 특정 질환에 노출되지 않도록 사전에 체크하고 있습니다.</div>
       <div class="tc-tags"><span class="tag">고혈압</span><span class="tag">당뇨</span><span class="tag">보건증</span><span class="tag">건강검진</span></div>
     </div>
   </div>
@@ -857,28 +858,49 @@ footer{padding:32px 40px;background:var(--ink);border-top:1px solid rgba(255,255
 window.addEventListener('scroll',()=>{
   document.getElementById('hdr').classList.toggle('light',scrollY>520);
 });
-function scrollToReserv(){
-  var el=document.getElementById('reserv');
-  if(el){var top=el.getBoundingClientRect().top+window.scrollY-80;window.scrollTo({top:top,behavior:'smooth'});}
-}
+// (scrollToReserv handled by Lenis above)
 function openM(t){
   document.getElementById(t==='stem'?'mStem':'mEmrg').classList.add('open');
-  document.body.style.overflow='hidden';
+
 }
 function closeM(t){
   document.getElementById(t==='stem'?'mStem':'mEmrg').classList.remove('open');
-  document.body.style.overflow='';
+
 }
-document.querySelectorAll('a[href^="#"]').forEach(a=>{
-  a.addEventListener('click',e=>{
-    const id=a.getAttribute('href').slice(1);
-    const el=document.getElementById(id);
-    if(el){e.preventDefault();const top=el.getBoundingClientRect().top+scrollY-68;window.scrollTo({top,behavior:'smooth'});}
-  });
-});
+// (anchor scroll handled by Lenis above)
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')}),{threshold:.1});
 document.querySelectorAll('.fu').forEach(el=>io.observe(el));
 setTimeout(()=>document.querySelectorAll('.hero .fu').forEach((el,i)=>setTimeout(()=>el.classList.add('vis'),i*130)),80);
+</script>
+<script>
+// ── Lenis Smooth Scroll ──
+const lenis = new Lenis({
+  duration: 1.2,
+  easing: function(t){ return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); },
+  direction: 'vertical',
+  gestureDirection: 'vertical',
+  smooth: true,
+  smoothTouch: false,
+  touchMultiplier: 2
+});
+
+function lenisRaf(time){ lenis.raf(time); requestAnimationFrame(lenisRaf); }
+requestAnimationFrame(lenisRaf);
+
+// 앵커 링크
+document.querySelectorAll('a[href^="#"]').forEach(function(a){
+  a.addEventListener('click', function(e){
+    var id = a.getAttribute('href').slice(1);
+    var el = document.getElementById(id);
+    if(el){ e.preventDefault(); lenis.scrollTo(el, {offset:-72}); }
+  });
+});
+
+// 예약 섹션 스크롤
+window.scrollToReserv = function(){
+  var el = document.getElementById('reserv');
+  if(el) lenis.scrollTo(el, {offset:-72});
+};
 </script>
 </body>
 </html>
