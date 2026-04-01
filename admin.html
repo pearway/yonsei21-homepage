@@ -541,7 +541,7 @@ var PIE=['#0D6EAA','#C09A5A','#2D6A4F','#E53935','#7C4DFF','#FF6D00','#00838F'];
 // ── 헬퍼 ──
 function gNt(){try{return JSON.parse(localStorage.getItem(KNT))||DEFAULT_NT}catch{return DEFAULT_NT}}
 function sNt(a){localStorage.setItem(KNT,JSON.stringify(a))}
-function gPw(){return localStorage.getItem(KPW)||'yonsei21'}
+function gPw(){var saved=localStorage.getItem(KPW);return saved||'yonsei21'}
 function gTok(){return localStorage.getItem('gh_tok_y21')||''}
 function gAna(){try{return JSON.parse(localStorage.getItem(KANA))||[]}catch{return []}}
 function gRes(){try{return JSON.parse(localStorage.getItem(KRES))||[]}catch{return []}}
@@ -631,13 +631,13 @@ function renderIG(gkey,cid){
   slots.forEach(function(s){
     var prev=localStorage.getItem('iprv_'+s.s);
     var card=document.createElement('div');
-    card.className='icard'+(prev?' has':'');
+    card.className='icard has';
     card.innerHTML='<div class="ithumb">'
-      +(prev?'<img src="'+prev+'" alt="">':'<div class="iph">+</div>')
+      +(prev?'<img src="'+prev+'" alt="">':'<img src="'+RAW+'/'+s.s+'?t='+Date.now()+'" alt="" onerror="this.parentNode.innerHTML=\'<div class=iph>+</div>\'">')
       +'<div class="iov"><span>클릭하여 교체</span></div>'
       +'</div>'
       +'<div class="ilbl">'+s.l+'</div>'
-      +'<div class="ist">'+(prev?'✓ 업로드됨':'기본 이미지')+'</div>'
+      +'<div class="ist">'+(prev?'✓ 새로 업로드됨':'📂 GitHub 파일')+'</div>'
       +'<div style="padding:0 9px 10px">'
       +'<button class="btn bo bxs iupbtn" style="width:100%" onclick="document.getElementById(\'fi_'+s.s.replace(/\./g,'_')+'\').click()">사진 교체</button>'
       +'<input type="file" id="fi_'+s.s.replace(/\./g,'_')+'" accept="image/*" style="display:none" onchange="upToGH(this,\''+s.s+'\',\''+gkey+'\',\''+cid+'\')">'
@@ -861,7 +861,7 @@ function changePw(){
   var p1=document.getElementById('pw1').value,p2=document.getElementById('pw2').value;
   if(!p1){toast('비밀번호를 입력해 주세요','err');return;}
   if(p1!==p2){toast('비밀번호가 일치하지 않습니다','err');return;}
-  localStorage.setItem(KPW,p1);
+  localStorage.setItem(KPW,p1);toast('비밀번호가 변경되었습니다. 새 비밀번호: '+p1);
   document.getElementById('pw1').value='';document.getElementById('pw2').value='';
   toast('비밀번호가 변경되었습니다');
 }
