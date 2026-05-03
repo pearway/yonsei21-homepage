@@ -78,7 +78,7 @@ nav{display:flex;align-items:center;gap:2px}
 .hero-h1 strong{font-weight:700}
 .hero-h1 em{font-style:normal;color:var(--gold-lt)}
 .hero-p{font-size:.95rem;color:rgba(255,255,255,.88);max-width:460px;line-height:1.95;margin-bottom:50px;font-weight:300}
-.hero-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:680px}
+.hero-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;max-width:960px}
 .hcard{padding:26px 28px 22px;border-radius:14px;cursor:pointer;transition:transform .3s,box-shadow .3s;position:relative;overflow:hidden}
 .hcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
 .hcard.gc{background:linear-gradient(135deg,rgba(201,153,58,.16),rgba(201,153,58,.06));border:1px solid rgba(201,153,58,.28)}
@@ -348,6 +348,7 @@ footer{padding:32px 40px;background:var(--ink);border-top:1px solid rgba(255,255
   <nav>
     <a class="nav-link coral" href="#emrg">외상·응급수술</a>
     <a class="nav-link gold" href="#stem">줄기세포 시술</a>
+    <a class="nav-link" style="color:#7DC241" href="#osteo">골다공증</a>
     <a class="nav-link" href="#treats">진료과목</a>
     <a class="nav-link" href="#methods">치료방법</a>
     <a class="nav-link" href="#doctor">의료진</a>
@@ -365,6 +366,7 @@ footer{padding:32px 40px;background:var(--ink);border-top:1px solid rgba(255,255
 <div class="mob-nav" id="mn">
   <a href="#emrg" onclick="document.getElementById('mn').classList.remove('open')">🏥 외상처치 &amp; 응급수술 (핵심)</a>
   <a href="#stem" onclick="document.getElementById('mn').classList.remove('open')">🔬 줄기세포 시술 (핵심)</a>
+      <a href="#osteo" onclick="document.getElementById('mn').classList.remove('open')" style="color:#7DC241">🦴 골다공증 특화 치료</a>
   <a href="#treats" onclick="document.getElementById('mn').classList.remove('open')">진료과목</a>
   <a href="#methods" onclick="document.getElementById('mn').classList.remove('open')">치료 방법</a>
   <a href="#doctor" onclick="document.getElementById('mn').classList.remove('open')">의료진 소개</a>
@@ -381,20 +383,29 @@ footer{padding:32px 40px;background:var(--ink);border-top:1px solid rgba(255,255
     <div class="eyebrow fu">강남 논현역 · 정형외과 전문 클리닉</div>
     <h1 class="hero-h1 fu">관절 고유의 기능을<br><em>최대한 보존</em>하고<br><strong>향상시키는 치료</strong></h1>
     <p class="hero-p fu">외상·과사용·노화로 인한 근골격계 문제, 정형외과·외상파트 전문경력 15년 대표원장이 직접 진단하고 최적의 방법으로 빠른 회복을 돕겠습니다.</p>
+    <div class="hero-tags fu" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px">
+      <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:6px 14px;font-size:.75rem;color:rgba(255,255,255,.9);cursor:pointer" onclick="openM('emrg')">외상처치·응급수술</span>
+      <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(201,154,90,.18);border:1px solid rgba(201,154,90,.35);border-radius:20px;padding:6px 14px;font-size:.75rem;color:#e8c07a;cursor:pointer" onclick="openM('stem')">관절내 줄기세포 시술</span>
+      <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(125,194,65,.15);border:1px solid rgba(125,194,65,.3);border-radius:20px;padding:6px 14px;font-size:.75rem;color:#a8d96b;cursor:pointer" onclick="openM('osteo')">골다공증 특화 치료</span>
+    </div>
     <div class="hero-cards fu">
       <div class="hcard rc" onclick="openM('emrg')">
-        <div class="hc-ico">🏥</div>
         <div class="hc-tag">핵심 치료 01</div>
         <div class="hc-title">외상처치 &amp; 응급수술</div>
         <div class="hc-desc">당일 수술·당일 퇴원 원칙. 창상·열상 및 화상 환자들을 신속하게 처치합니다.</div>
         <div class="hc-link">자세히 보기 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
       <div class="hcard gc" onclick="openM('stem')">
-        <div class="hc-ico">🔬</div>
         <div class="hc-tag">핵심 치료 02</div>
         <div class="hc-title">관절내 줄기세포 시술</div>
         <div class="hc-desc">PRP·BMAC 줄기세포로 퇴행성 관절염을 근본부터 치료. 보건복지부 신의료기술 인정.</div>
         <div class="hc-link">자세히 보기 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+      <div class="hcard" style="border:1px solid rgba(125,194,65,.28);background:rgba(125,194,65,.07)" onclick="openM('osteo')">
+        <div class="hc-tag" style="color:#7DC241">핵심 치료 03</div>
+        <div class="hc-title">골다공증 특화 치료</div>
+        <div class="hc-desc">1년에 1번 골밀도 검사로 골절을 예방합니다. 생물학적 제제·주사 치료·비타민D 주사까지 1대1 개별화 치료.</div>
+        <div class="hc-link" style="color:#7DC241">자세히 보기 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     </div>
   </div>
@@ -456,6 +467,33 @@ footer{padding:32px 40px;background:var(--ink);border-top:1px solid rgba(255,255
   </div>
 </section>
 
+<!-- OSTEO -->
+<section id="osteo" style="background:var(--ink2)">
+  <div class="stem-wrap" style="direction:rtl">
+    <div class="stem-vis" style="direction:ltr;padding:0;position:relative;overflow:hidden;min-height:480px;background:linear-gradient(135deg,#1a2e1a,#2a4a2a)"> style="padding:0;position:relative;overflow:hidden;min-height:480px;background:linear-gradient(135deg,#1a2e1a,#2a4a2a)">
+      <img src="osteo_photo.jpg" alt="골다공증 치료" onerror="this.style.display='none';document.getElementById('osteoFallback').style.display='flex'" style="width:100%;height:100%;object-fit:cover;display:block;min-height:480px">
+      <div id="osteoFallback" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;flex-direction:column;gap:12px;background:linear-gradient(135deg,#1e3a1e,#2d5a2d)">
+        <div style="width:70px;height:70px;border-radius:50%;background:rgba(125,194,65,.15);border:1px solid rgba(125,194,65,.3);display:flex;align-items:center;justify-content:center">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(125,194,65,.6)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        </div>
+        <span style="font-size:.75rem;color:rgba(125,194,65,.5);letter-spacing:.1em">관리자에서 사진 업로드</span>
+      </div>
+    </div>
+    <div class="stem-body" style="direction:ltr">
+      <div class="badge" style="background:rgba(125,194,65,.15);color:#7DC241;border:1px solid rgba(125,194,65,.3)">핵심 치료 · Core Treatment 03</div>
+      <h2 class="core-h2 fu">골다공증<br><em style="color:#7DC241">특화 치료</em></h2>
+      <p class="core-p fu">1년에 1번 골밀도 검사로 골절을 예방합니다. 골다공증은 증상 없이 진행되는 침묵의 병으로, 골밀도 측정 전문자격을 갖춘 대표원장님이 생활습관·기저질환을 종합 검토하여 1대1 개별화 치료를 진행합니다.</p>
+      <div class="pts fu">
+        <div class="pt"><span class="pt-n" style="background:rgba(125,194,65,.2);color:#7DC241;border-color:rgba(125,194,65,.3)">1</span><div><div class="pt-t">경구약·주사·생물학적 제제</div><div class="pt-d">데노수맙·로모소주맙·테리파라타이드 등 환자 상태에 맞는 최적의 치료제 선택</div></div></div>
+        <div class="pt"><span class="pt-n" style="background:rgba(125,194,65,.2);color:#7DC241;border-color:rgba(125,194,65,.3)">2</span><div><div class="pt-t">비타민D 주사 + 골밀도 검사(BMD)</div><div class="pt-d">1년에 한 번 비타민D 주사로 칼슘 흡수 강화. DXA 정밀 골밀도 측정</div></div></div>
+        <div class="pt"><span class="pt-n" style="background:rgba(125,194,65,.2);color:#7DC241;border-color:rgba(125,194,65,.3)">3</span><div><div class="pt-t">1대1 개별화 치료 솔루션</div><div class="pt-d">골밀도 측정 전문자격 보유. 생활습관·기저질환·약물 복용력 종합 검토 후 맞춤 치료</div></div></div>
+      </div>
+      <a class="core-btn fu" style="background:#7DC241;color:#fff;border-color:#7DC241" href="#reserv" onclick="event.preventDefault();scrollToReserv()">상담 예약하기</a>
+    </div>
+  </div>
+</section>
+
+
 <!-- STATS -->
 <div class="stats">
   <div class="stats-g">
@@ -465,6 +503,7 @@ footer{padding:32px 40px;background:var(--ink);border-top:1px solid rgba(255,255
     <div><div class="sn">1:1</div><div class="sl">대표원장 직접<br>맞춤 진료</div></div>
   </div>
 </div>
+
 
 
 <!-- GALLERY: 병원 내부 & 장비 -->
@@ -854,18 +893,35 @@ footer{padding:32px 40px;background:var(--ink);border-top:1px solid rgba(255,255
   </div>
 </div>
 
+<div class="mbg" id="mOsteo" onclick="if(event.target===this)closeM('osteo')">
+  <div class="modal">
+    <button class="mc" onclick="closeM('osteo')">✕</button>
+    <div class="m-lbl" style="background:rgba(125,194,65,.15);color:#7DC241">핵심 치료 03 · 골다공증 특화 치료</div>
+    <div class="m-title">골다공증<br>특화 치료</div>
+    <div class="m-body">1년에 1번 골밀도 검사로 골절을 예방합니다. 골다공증은 증상 없이 진행되는 침묵의 병으로, 고관절 골절 시 5년 이내 사망률이 45%에 달할 만큼 위험합니다.</div>
+    <div class="ml">
+      <div class="mli"><div class="mli-t">💊 경구약 치료</div><div class="mli-d">환자 상태와 복약 순응도에 따라 일 1회·주 1회·월 1회 복용</div></div>
+      <div class="mli"><div class="mli-t">💉 주사 치료</div><div class="mli-d">3개월에 한 번 병원 방문하여 골다공증 주사치료</div></div>
+      <div class="mli"><div class="mli-t">🔬 생물학적 제제</div><div class="mli-d">데노수맙(6개월 간격), 로모소주맙(월 1회 총 12회), 테리파라타이드(부갑상선 호르몬 치료)</div></div>
+      <div class="mli"><div class="mli-t">☀️ 비타민D 주사</div><div class="mli-d">1년에 한 번 비타민D 주사로 칼슘 흡수 강화 및 골밀도 유지</div></div>
+      <div class="mli"><div class="mli-t">📊 골밀도 검사 (BMD·DXA)</div><div class="mli-d">허리뼈·대퇴골 정밀 측정. 보험기준: 여성 65세·남성 70세 이상. 50대부터 관리 권장</div></div>
+    </div>
+    <button class="m-btn" style="background:#7DC241;color:#fff" onclick="window.location='tel:025125121'">📞 02-512-5121 골다공증 상담</button>
+  </div>
+</div>
+
 <script>
 window.addEventListener('scroll',()=>{
   document.getElementById('hdr').classList.toggle('light',scrollY>520);
 });
 // (scrollToReserv handled by Lenis above)
 function openM(t){
-  document.getElementById(t==='stem'?'mStem':'mEmrg').classList.add('open');
-
+  var id=t==='stem'?'mStem':t==='emrg'?'mEmrg':'mOsteo';
+  document.getElementById(id).classList.add('open');
 }
 function closeM(t){
-  document.getElementById(t==='stem'?'mStem':'mEmrg').classList.remove('open');
-
+  var id=t==='stem'?'mStem':t==='emrg'?'mEmrg':'mOsteo';
+  document.getElementById(id).classList.remove('open');
 }
 // (anchor scroll handled by Lenis above)
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')}),{threshold:.1});
@@ -903,4 +959,6 @@ window.scrollToReserv = function(){
 };
 </script>
 </body>
-</html>
+</html></div>
+
+

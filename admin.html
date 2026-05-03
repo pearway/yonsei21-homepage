@@ -206,13 +206,9 @@ body{font-family:"Noto Sans KR",sans-serif;color:var(--text);background:var(--bg
       <div class="nitem" onclick="goPage('reservation')"><span class="nico">□</span>예약 신청 현황</div>
       <div class="ndiv"></div>
       <div class="ngrp">이미지 관리</div>
-      <div class="nitem" onclick="goPage('img-slides')"><span class="nico">◈</span>메인 슬라이더</div>
-      <div class="nitem" onclick="goPage('img-doctor')"><span class="nico">◈</span>원장님 사진</div>
-      <div class="nitem" onclick="goPage('img-core')"><span class="nico">◈</span>핵심치료 사진</div>
-      <div class="nitem" onclick="goPage('img-gallery')"><span class="nico">◈</span>병원 갤러리 사진</div>
-      <div class="nitem" onclick="goPage('img-programs')"><span class="nico">◈</span>비수술 치료 카드</div>
-      <div class="nitem" onclick="goPage('img-links')"><span class="nico">◈</span>링크 카드</div>
-      <div class="nitem" onclick="goPage('sns-links')"><span class="nico">◈</span>공식채널 링크</div>
+      <div class="nitem" onclick="goPage('img-main')"><span class="nico">◈</span>메인 메인사진</div>
+      <div class="nitem" onclick="goPage('img-gallery')"><span class="nico">◈</span>갤러리</div>
+      <div class="nitem" onclick="goPage('img-gallery')"><span class="nico">◈</span>갤러리</div>
       <div class="ndiv"></div>
       <div class="ngrp">설정</div>
       <div class="nitem" onclick="goPage('settings')"><span class="nico">◎</span>설정</div>
@@ -342,95 +338,26 @@ body{font-family:"Noto Sans KR",sans-serif;color:var(--text);background:var(--bg
       </div>
 
       <!-- 이미지: 슬라이더 -->
-      <div class="page" id="page-img-slides">
+      <div class="page" id="page-img-main">
         <div class="sec">
-          <div class="sech"><div><div class="sectit">메인 슬라이더</div><div class="secsub">홈 배너 이미지 3장 · 1400x640px 이상 권장</div></div></div>
+          <div class="sech"><div><div class="sectit">메인 메인 사진</div><div class="secsub">줄기세포·응급수술·골다공증·원장님 사진 · 1400x900px 이상 권장</div></div></div>
           <div class="secb"><div class="igrid" id="g-slides"></div></div>
         </div>
       </div>
 
-      <!-- 이미지: 원장님 사진 -->
-      <div class="page" id="page-img-doctor">
-        <div class="sec">
-          <div class="sech"><div><div class="sectit">원장님 프로필 사진</div><div class="secsub">의료진 소개 페이지에 표시되는 원장님 사진 · 600x800px 이상 세로형 권장 (3:4 비율)</div></div></div>
-          <div class="secb">
-            <div id="g-doctor"></div>
-            <div style="margin-top:20px;padding:16px 20px;background:var(--navy-lt);border-radius:8px;font-size:12px;color:var(--sub);line-height:1.7">
-              📌 <strong>업로드 안내</strong><br>
-              • 권장 파일명: <code style="background:rgba(0,0,0,.07);padding:2px 6px;border-radius:3px">doctor_kim.jpg</code><br>
-              • 세로형 사진 권장 (3:4 비율, 예: 600×800px)<br>
-              • 인물 중심으로 촬영된 정면 또는 반측면 사진<br>
-              • 화이트코트 착용 전문적 이미지 추천
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 이미지: 핵심치료 -->
-      <div class="page" id="page-img-core">
-        <div class="sec">
-          <div class="sech"><div><div class="sectit">핵심치료 사진</div><div class="secsub">줄기세포 시술 (좌측) · 외상처치·응급수술 (우측) · 1200×800px 이상 권장</div></div></div>
-          <div class="secb"><div class="igrid" id="g-core"></div></div>
-        </div>
-      </div>
-
-      <!-- 이미지: 병원 갤러리 -->
-      <div class="page" id="page-img-gallery">
-        <div class="sec">
-          <div class="sech"><div><div class="sectit">병원 갤러리 사진</div><div class="secsub">병원 내부·장비 사진 5장 · gallery_1은 대형(2행), 나머지는 1200×600px 이상 권장</div></div></div>
-          <div class="secb"><div class="igrid" id="g-gallery"></div></div>
-        </div>
-      </div>
-
       <!-- 이미지: 비수술 카드 -->
-      <div class="page" id="page-img-programs">
+      <div class="page" id="page-img-gallery">
         <div class="sec">
           <div class="sech"><div><div class="sectit">비수술 특화치료 카드</div><div class="secsub">홈 서비스 카드 이미지 3장 · 600x400px 이상 권장</div></div></div>
           <div class="secb"><div class="igrid" id="g-programs"></div></div>
         </div>
       </div>
 
-      <!-- 이미지: 링크 카드 -->
-      <div class="page" id="page-img-links">
+      <!-- 이미지: 갤러리 -->
+      <div class="page" id="page-img-gallery2">
         <div class="sec">
           <div class="sech"><div><div class="sectit">본원소개 · 의료진 · 오시는길 카드</div><div class="secsub">홈 하단 3단 링크 배경 · 800x360px 이상 권장</div></div></div>
           <div class="secb"><div class="igrid" id="g-links"></div></div>
-        </div>
-      </div>
-
-      <!-- 공식채널 링크 -->
-      <div class="page" id="page-sns-links">
-        <div class="sec" style="margin-bottom:18px">
-          <div class="sech"><div><div class="sectit">공식채널 링크 관리</div><div class="secsub">홈페이지 하단 및 예약 섹션에 표시되는 SNS 채널 링크를 설정합니다.</div></div></div>
-          <div class="secb">
-            <div id="snsForm" style="max-width:560px">
-              <div class="fr" style="margin-bottom:16px">
-                <label class="fl">💬 카카오채널 URL</label>
-                <input class="fi" id="snsKakao" type="url" placeholder="https://pf.kakao.com/_xxxxx">
-              </div>
-              <div class="fr" style="margin-bottom:16px">
-                <label class="fl">📸 인스타그램 URL</label>
-                <input class="fi" id="snsInsta" type="url" placeholder="https://www.instagram.com/seoulyonsei21c">
-              </div>
-              <div class="fr" style="margin-bottom:16px">
-                <label class="fl">📝 네이버 블로그 URL</label>
-                <input class="fi" id="snsBlog" type="url" placeholder="https://m.blog.naver.com/taeven82">
-              </div>
-              <div class="fr" style="margin-bottom:16px">
-                <label class="fl">▶ 유튜브 URL (선택)</label>
-                <input class="fi" id="snsYoutube" type="url" placeholder="https://www.youtube.com/...">
-              </div>
-              <div class="fr" style="margin-bottom:16px">
-                <label class="fl">f 페이스북 URL (선택)</label>
-                <input class="fi" id="snsFacebook" type="url" placeholder="https://www.facebook.com/...">
-              </div>
-              <div style="background:var(--navy-lt);border-radius:8px;padding:14px 18px;margin-bottom:18px;font-size:12px;color:var(--sub);line-height:1.7">
-                ⚡ 저장 후 홈페이지 하단 SNS 섹션에 즉시 반영됩니다.<br>
-                URL을 비워두면 해당 채널 버튼이 숨겨집니다.
-              </div>
-              <button class="btn bn" onclick="saveSNS()">링크 저장</button>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -496,25 +423,25 @@ body{font-family:"Noto Sans KR",sans-serif;color:var(--text);background:var(--bg
 <div id="toast"></div>
 
 <script>
-
-// ── SNS Links ──
-var KSNS='y21_sns';
-function gSNS(){try{return JSON.parse(localStorage.getItem(KSNS)||'null')||{kakao:'https://pf.kakao.com/_xoyzC',insta:'https://www.instagram.com/seoulyonsei21c',blog:'https://m.blog.naver.com/taeven82',youtube:'',facebook:''}}catch(e){return {kakao:'https://pf.kakao.com/_xoyzC',insta:'https://www.instagram.com/seoulyonsei21c',blog:'https://m.blog.naver.com/taeven82',youtube:'',facebook:''}}}
-function renderSNS(){var d=gSNS();document.getElementById('snsKakao').value=d.kakao||'';document.getElementById('snsInsta').value=d.insta||'';document.getElementById('snsBlog').value=d.blog||'';document.getElementById('snsYoutube').value=d.youtube||'';document.getElementById('snsFacebook').value=d.facebook||'';}
-function saveSNS(){var d={kakao:document.getElementById('snsKakao').value.trim(),insta:document.getElementById('snsInsta').value.trim(),blog:document.getElementById('snsBlog').value.trim(),youtube:document.getElementById('snsYoutube').value.trim(),facebook:document.getElementById('snsFacebook').value.trim()};localStorage.setItem(KSNS,JSON.stringify(d));toast('공식채널 링크가 저장되었습니다');}
-
 // ── 상수 ──
 var REPO='pearway/yonsei21-homepage', BRANCH='main';
 var RAW='https://raw.githubusercontent.com/'+REPO+'/'+BRANCH;
 var KNT='y21_notices', KPW='y21_pw', KANA='y21_ana', KEXT='y21_extra', KRES='y21_res';
 
 var IMG_SLOTS={
-  slides:  [{s:'slide1.jpg',l:'슬라이더 1'},{s:'slide2.jpg',l:'슬라이더 2'},{s:'slide3.jpg',l:'슬라이더 3'}],
-  doctor:  [{s:'doctor_kim.jpg',l:'원장님 프로필 사진 (의료진 소개 페이지)'}],
-  core:    [{s:'stem_procedure.jpg',l:'줄기세포 시술 사진 (좌측)'},{s:'emergency_surgery.jpg',l:'외상처치·응급수술 사진 (우측)'}],
-  gallery: [{s:'gallery_1.jpg',l:'갤러리 1 (대형)'},{s:'gallery_2.jpg',l:'갤러리 2'},{s:'gallery_3.jpg',l:'갤러리 3'},{s:'gallery_4.jpg',l:'갤러리 4'},{s:'gallery_5.jpg',l:'갤러리 5'}],
-  programs:[{s:'program1.jpg',l:'교정 도수치료'},{s:'program2.jpg',l:'체외충격파(ESWT)'},{s:'program3.jpg',l:'건강검진센터'}],
-  links:   [{s:'link_about.jpg',l:'본원소개 카드'},{s:'link_doctors.jpg',l:'의료진 카드'},{s:'link_location.jpg',l:'오시는길 카드'}]
+  main:[
+    {s:'stem_procedure.jpg',   l:'줄기세포 시술 사진'},
+    {s:'emergency_surgery.jpg',l:'외상·응급수술 사진'},
+    {s:'osteo_photo.jpg',      l:'골다공증 치료 사진'},
+    {s:'doctor_kim.jpg',       l:'원장님 사진'}
+  ],
+  gallery:[
+    {s:'gallery_1.jpg',l:'갤러리 1'},
+    {s:'gallery_2.jpg',l:'갤러리 2'},
+    {s:'gallery_3.jpg',l:'갤러리 3'},
+    {s:'gallery_4.jpg',l:'갤러리 4'},
+    {s:'gallery_5.jpg',l:'갤러리 5'}
+  ]
 };
 
 var DEFAULT_NT=[
@@ -541,7 +468,7 @@ var PIE=['#0D6EAA','#C09A5A','#2D6A4F','#E53935','#7C4DFF','#FF6D00','#00838F'];
 // ── 헬퍼 ──
 function gNt(){try{return JSON.parse(localStorage.getItem(KNT))||DEFAULT_NT}catch{return DEFAULT_NT}}
 function sNt(a){localStorage.setItem(KNT,JSON.stringify(a))}
-function gPw(){var saved=localStorage.getItem(KPW);return saved||'yonsei21'}
+function gPw(){return localStorage.getItem(KPW)||'1234'}
 function gTok(){return localStorage.getItem('gh_tok_y21')||''}
 function gAna(){try{return JSON.parse(localStorage.getItem(KANA))||[]}catch{return []}}
 function gRes(){try{return JSON.parse(localStorage.getItem(KRES))||[]}catch{return []}}
@@ -577,7 +504,7 @@ function doLogout(){
 }
 
 // ── 페이지 ──
-var PTITLES={dashboard:'대시보드',notice:'공지사항',reservation:'예약 신청 현황',analytics:'방문자 분석','img-slides':'메인 슬라이더','img-doctor':'원장님 사진','img-core':'핵심치료 사진','img-gallery':'병원 갤러리 사진','img-programs':'비수술 치료 카드','img-links':'링크 카드','sns-links':'공식채널 링크',settings:'설정'};
+var PTITLES={dashboard:'대시보드',notice:'공지사항',reservation:'예약 신청 현황',analytics:'방문자 분석','img-slides':'메인 슬라이더','img-programs':'갤러리','img-links':'갤러리',settings:'설정'};
 function goPage(id){
   document.querySelectorAll('.page').forEach(function(p){p.classList.remove('on')});
   document.querySelectorAll('.nitem').forEach(function(n){n.classList.remove('active')});
@@ -589,12 +516,8 @@ function goPage(id){
   if(id==='reservation')renderRes();
   if(id==='analytics'){renderAna();loadChartJS();}
   if(id==='img-slides')renderIG('slides','g-slides');
-  if(id==='img-doctor')renderIG('doctor','g-doctor');
-  if(id==='img-core')renderIG('core','g-core');
-  if(id==='img-gallery')renderIG('gallery','g-gallery');
   if(id==='img-programs')renderIG('programs','g-programs');
   if(id==='img-links')renderIG('links','g-links');
-  if(id==='sns-links')renderSNS();
   if(id==='settings')updTokBox();
 }
 
@@ -631,13 +554,13 @@ function renderIG(gkey,cid){
   slots.forEach(function(s){
     var prev=localStorage.getItem('iprv_'+s.s);
     var card=document.createElement('div');
-    card.className='icard has';
+    card.className='icard'+(prev?' has':'');
     card.innerHTML='<div class="ithumb">'
-      +(prev?'<img src="'+prev+'" alt="">':'<img src="'+RAW+'/'+s.s+'?t='+Date.now()+'" alt="" onerror="this.parentNode.innerHTML=\'<div class=iph>+</div>\'">')
+      +(prev?'<img src="'+prev+'" alt="">':'<div class="iph">+</div>')
       +'<div class="iov"><span>클릭하여 교체</span></div>'
       +'</div>'
       +'<div class="ilbl">'+s.l+'</div>'
-      +'<div class="ist">'+(prev?'✓ 새로 업로드됨':'📂 GitHub 파일')+'</div>'
+      +'<div class="ist">'+(prev?'✓ 업로드됨':'기본 이미지')+'</div>'
       +'<div style="padding:0 9px 10px">'
       +'<button class="btn bo bxs iupbtn" style="width:100%" onclick="document.getElementById(\'fi_'+s.s.replace(/\./g,'_')+'\').click()">사진 교체</button>'
       +'<input type="file" id="fi_'+s.s.replace(/\./g,'_')+'" accept="image/*" style="display:none" onchange="upToGH(this,\''+s.s+'\',\''+gkey+'\',\''+cid+'\')">'
@@ -681,7 +604,7 @@ function renderDash(){
   if(!recent.length){tb.innerHTML='<tr><td colspan="4" class="empty">공지사항이 없습니다</td></tr>';return;}
   tb.innerHTML=recent.map(function(n){return '<tr><td><span class="badge b-'+{공지:'gong',이벤트:'evt',뉴스:'news'}[n.cat]+'">'+n.cat+'</span></td><td style="max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+n.title+'</td><td style="color:var(--light)">'+fd(n.date)+'</td><td><button class="btn bo bxs" onclick="openEdit('+n.id+')">수정</button></td></tr>';}).join('');
   var st=document.getElementById('dashImgSt');
-  var grps=[{l:'원장님 사진',k:'doctor'},{l:'메인 슬라이더',k:'slides'},{l:'핵심치료 사진',k:'core'},{l:'병원 갤러리',k:'gallery'},{l:'비수술 치료 카드',k:'programs'},{l:'링크 카드',k:'links'}];
+  var grps=[{l:'메인 슬라이더',k:'slides'},{l:'갤러리',k:'programs'},{l:'갤러리',k:'links'}];
   st.innerHTML=grps.map(function(g){
     var sl=IMG_SLOTS[g.k]||[],done=sl.filter(function(s){return localStorage.getItem('iprv_'+s.s)}).length,pct=sl.length?Math.round(done/sl.length*100):0;
     var col=pct===100?'var(--navy)':pct>50?'var(--gold)':'var(--red)';
@@ -861,7 +784,7 @@ function changePw(){
   var p1=document.getElementById('pw1').value,p2=document.getElementById('pw2').value;
   if(!p1){toast('비밀번호를 입력해 주세요','err');return;}
   if(p1!==p2){toast('비밀번호가 일치하지 않습니다','err');return;}
-  localStorage.setItem(KPW,p1);toast('비밀번호가 변경되었습니다. 새 비밀번호: '+p1);
+  localStorage.setItem(KPW,p1);
   document.getElementById('pw1').value='';document.getElementById('pw2').value='';
   toast('비밀번호가 변경되었습니다');
 }
