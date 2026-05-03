@@ -206,8 +206,7 @@ body{font-family:"Noto Sans KR",sans-serif;color:var(--text);background:var(--bg
       <div class="nitem" onclick="goPage('reservation')"><span class="nico">□</span>예약 신청 현황</div>
       <div class="ndiv"></div>
       <div class="ngrp">이미지 관리</div>
-      <div class="nitem" onclick="goPage('img-main')"><span class="nico">◈</span>메인 메인사진</div>
-      <div class="nitem" onclick="goPage('img-gallery')"><span class="nico">◈</span>갤러리</div>
+      <div class="nitem" onclick="goPage('img-main')"><span class="nico">◈</span>메인사진</div>
       <div class="nitem" onclick="goPage('img-gallery')"><span class="nico">◈</span>갤러리</div>
       <div class="ndiv"></div>
       <div class="ngrp">설정</div>
@@ -504,7 +503,7 @@ function doLogout(){
 }
 
 // ── 페이지 ──
-var PTITLES={dashboard:'대시보드',notice:'공지사항',reservation:'예약 신청 현황',analytics:'방문자 분석','img-slides':'메인 슬라이더','img-programs':'갤러리','img-links':'갤러리',settings:'설정'};
+var PTITLES={dashboard:'대시보드',notice:'공지사항',reservation:'예약 신청 현황',analytics:'방문자 분석','img-main':'메인사진','img-gallery':'갤러리',settings:'설정'};
 function goPage(id){
   document.querySelectorAll('.page').forEach(function(p){p.classList.remove('on')});
   document.querySelectorAll('.nitem').forEach(function(n){n.classList.remove('active')});
@@ -515,9 +514,8 @@ function goPage(id){
   if(id==='notice')renderNt();
   if(id==='reservation')renderRes();
   if(id==='analytics'){renderAna();loadChartJS();}
-  if(id==='img-slides')renderIG('slides','g-slides');
-  if(id==='img-programs')renderIG('programs','g-programs');
-  if(id==='img-links')renderIG('links','g-links');
+  if(id==='img-main')renderIG('main','g-main');
+  if(id==='img-gallery')renderIG('gallery','g-gallery');
   if(id==='settings')updTokBox();
 }
 
