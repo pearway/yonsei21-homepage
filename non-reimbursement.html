@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>비급여 진료비용 내역 | 서울연세21세기의원</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans KR',sans-serif;font-size:14px;color:#333;background:#f5f5f5}
+a{text-decoration:none;color:inherit}
+
+/* 헤더 */
+.page-header{background:#fff;border-bottom:1px solid #ddd;padding:20px 0}
+.header-inner{max-width:1100px;margin:0 auto;padding:0 20px}
+.header-inner h1{font-size:1.3rem;font-weight:700;color:#1a3a6e;text-align:center}
+.header-inner p{font-size:.82rem;color:#666;text-align:center;margin-top:8px}
+
+/* 컨테이너 */
+.wrap{max-width:1100px;margin:30px auto;padding:0 20px 60px}
+
+/* 관련근거 박스 */
+.notice-box{background:#fff;border:1px solid #ddd;border-radius:4px;padding:18px 22px;margin-bottom:28px}
+.notice-box .nb-title{font-size:.82rem;font-weight:700;color:#333;margin-bottom:6px}
+.notice-box p{font-size:.8rem;color:#555;line-height:1.6}
+
+/* 섹션 타이틀 */
+.sec-title{display:flex;align-items:center;gap:8px;font-size:.95rem;font-weight:700;color:#1a3a6e;margin-bottom:12px}
+.sec-title::before{content:'';width:10px;height:10px;background:#1a3a6e;border-radius:50%;flex-shrink:0}
+
+/* 섹션 설명 박스 */
+.sec-desc{background:#fff;border:1px solid #ddd;border-radius:4px;padding:14px 18px;margin-bottom:24px;font-size:.82rem;color:#555}
+
+/* 탭 */
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid #ddd;border-radius:0;margin-bottom:16px;overflow:hidden}
+.tab-btn{padding:14px 10px;text-align:center;font-size:.88rem;font-weight:500;color:#555;background:#f8f8f8;cursor:pointer;border:none;border-right:1px solid #ddd;transition:all .2s}
+.tab-btn:last-child{border-right:none}
+.tab-btn.active{background:#fff;color:#1a3a6e;font-weight:700;border-bottom:2px solid #1a3a6e}
+.tab-btn:hover:not(.active){background:#eef2f8}
+
+/* 검색 */
+.search-bar{display:flex;justify-content:flex-end;gap:8px;margin-bottom:12px}
+.search-bar input{width:220px;padding:8px 12px;border:1px solid #ccc;border-radius:2px;font-size:.82rem;outline:none}
+.search-bar input:focus{border-color:#1a3a6e}
+.search-bar button{padding:8px 18px;background:#555;color:#fff;border:none;border-radius:2px;font-size:.82rem;cursor:pointer;display:flex;align-items:center;gap:6px}
+.search-bar button:hover{background:#1a3a6e}
+
+/* 테이블 */
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.8rem;background:#fff}
+thead tr{background:#f0f3f8}
+th{padding:10px 8px;text-align:center;border:1px solid #d0d5e0;font-weight:600;color:#333;font-size:.78rem;word-break:keep-all}
+td{padding:9px 8px;text-align:center;border:1px solid #ddd;color:#444;word-break:keep-all}
+tbody tr:hover{background:#f8faff}
+.th-group{background:#e4e9f2}
+
+/* 탭 콘텐츠 */
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* 페이지네이션 */
+.pagination{display:flex;justify-content:center;gap:4px;margin-top:20px}
+.pg-btn{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid #ddd;border-radius:2px;font-size:.78rem;cursor:pointer;background:#fff;color:#555}
+.pg-btn.active{background:#1a3a6e;color:#fff;border-color:#1a3a6e;font-weight:700}
+.pg-btn:hover:not(.active){background:#f0f3f8}
+
+/* 하단 안내 */
+.footer-note{margin-top:20px;font-size:.75rem;color:#888}
+
+/* 모바일 */
+@media(max-width:768px){
+  .tabs{grid-template-columns:repeat(3,1fr)}
+  .tab-btn{font-size:.75rem;padding:11px 6px}
+  .search-bar input{width:150px}
+  th,td{font-size:.72rem;padding:7px 5px}
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar" style="background:#1a3a6e;padding:10px 20px">
+  <div style="max-width:1100px;margin:0 auto">
+    <a href="index.html" style="display:inline-flex;align-items:center;gap:8px;color:rgba(255,255,255,.85);font-size:.82rem;text-decoration:none">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      서울연세21세기의원 홈으로 돌아가기
+    </a>
+  </div>
+</div>
+<div class="page-header">
+  <div class="header-inner">
+    <h1>서울연세21세기의원 비급여 진료비용 내역</h1>
+    <p>"서울연세21세기의원"에서 시행중인 비급여 진료비용 내역을 고지 합니다.</p>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- 관련근거 -->
+  <div class="notice-box">
+    <div class="nb-title">관련근거</div>
+    <p>의료법 제45조 및 동법 시행규칙 제42조의2에 의거하여 비급여 진료비용을 고지하기 위한 안내 페이지 입니다.</p>
+  </div>
+
+  <!-- 비급여 진료비용 안내 -->
+  <div class="sec-title">비급여 진료비용 안내</div>
+  <div class="sec-desc">시행중인 비급여 수가 내역을 다음과 같이 게시하오니 고객께서는 병원 이용에 참고하시기 바랍니다.</div>
+
+  <!-- 탭 섹션 타이틀 -->
+  <div class="sec-title" id="cur-tab-title">행위료</div>
+  <div class="sec-desc" id="cur-tab-desc">비급여 행위료 안내페이지입니다.</div>
+
+  <!-- 탭 버튼 -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('act')">행위료</button>
+    <button class="tab-btn" onclick="switchTab('mat')">치료재료대</button>
+    <button class="tab-btn" onclick="switchTab('cert')">제증명수수료</button>
+  </div>
+
+  <!-- 검색 -->
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="검색어를 입력하세요" onkeydown="if(event.key==='Enter')doSearch()">
+    <button onclick="doSearch()">검색</button>
+  </div>
+
+  <!-- ① 행위료 -->
+  <div class="tab-content active" id="tab-act">
+    <div class="tbl-wrap">
+      <table id="tbl-act">
+        <thead>
+          <tr>
+            <th rowspan="2" class="th-group">분류</th>
+            <th colspan="2" class="th-group">진료비용항목</th>
+            <th colspan="5" class="th-group">항목별 가격정보(단위:원)</th>
+            <th rowspan="2" class="th-group">특이사항</th>
+            <th rowspan="2" class="th-group">최종<br>변경일</th>
+          </tr>
+          <tr>
+            <th>코드</th>
+            <th>명칭</th>
+            <th>비용</th>
+            <th>최저비용</th>
+            <th>최고비용</th>
+            <th>치료재료대<br>포함</th>
+            <th>약제비<br>포함</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>처치 및 수술료</td><td></td>
+            <td style="text-align:left">무릎 골관절염의 자가 혈소판 풍부관절강내 주사(편측)</td>
+            <td>-</td><td>400,000</td><td>800,000</td><td>X</td><td>X</td>
+            <td>신의료기술</td><td></td>
+          </tr>
+          <tr>
+            <td>처치 및 수술료</td><td></td>
+            <td style="text-align:left">족저근막염의 자가 혈소판 풍부혈장주사(PRP, 편측)</td>
+            <td>150,000</td><td>-</td><td>-</td><td>X</td><td>X</td>
+            <td>신의료기술</td><td></td>
+          </tr>
+          <tr>
+            <td>처치 및 수술료</td><td></td>
+            <td style="text-align:left">수술 중 자가 혈소판 풍부 혈장 치료술(PRP/회전근개)</td>
+            <td>500,000</td><td>-</td><td>-</td><td>X</td><td>X</td>
+            <td>신의료기술</td><td></td>
+          </tr>
+          <tr>
+            <td>처치 및 수술료</td><td></td>
+            <td style="text-align:left">무릎 골관절염에 대한 골수 흡인 농축물 관절강내 주사(BMAC)</td>
+            <td>1,500,000</td><td>-</td><td>-</td><td>X</td><td>X</td>
+            <td>신의료기술</td><td>23.10.16</td>
+          </tr>
+          <tr>
+            <td></td><td></td>
+            <td style="text-align:left">정밀초음파</td>
+            <td>80,000</td><td>50,000</td><td>80,000</td><td>X</td><td>X</td>
+            <td></td><td>2026.01.01</td>
+          </tr>
+          <tr>
+            <td></td><td></td>
+            <td style="text-align:left">체외충격파</td>
+            <td>80,000</td><td>80,000</td><td>100,000</td><td>X</td><td>X</td>
+            <td></td><td>2026.01.01</td>
+          </tr>
+          <tr>
+            <td></td><td></td>
+            <td style="text-align:left">크라이오테라피</td>
+            <td>70,000</td><td>70,000</td><td>100,000</td><td>X</td><td>X</td>
+            <td></td><td></td>
+          </tr>
+          <tr>
+            <td></td><td></td>
+            <td style="text-align:left">증식주사(프롤로)</td>
+            <td>100,000</td><td>50,000</td><td>100,000</td><td>X</td><td>X</td>
+            <td></td><td></td>
+          </tr>
+          <tr>
+            <td></td><td></td>
+            <td style="text-align:left">DNA주사(PDRN, 연어)</td>
+            <td>50,000</td><td>50,000</td><td>200,000</td><td>X</td><td>X</td>
+            <td></td><td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="footer-note">※ 건강보험심사평가원에서 제공하는 고지 지원서비스를 이용하였습니다.</div>
+  </div>
+
+  <!-- ② 치료재료대 -->
+  <div class="tab-content" id="tab-mat">
+    <div class="tbl-wrap">
+      <table id="tbl-mat">
+        <thead>
+          <tr>
+            <th class="th-group">항목</th>
+            <th class="th-group">내용</th>
+            <th class="th-group">비용</th>
+            <th class="th-group">비고</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>치료재료대</td><td>염증주사(TA)</td><td>20,000원~</td><td></td></tr>
+          <tr><td></td><td>듀오덤</td><td>5,000원</td><td></td></tr>
+          <tr><td></td><td>방수밴드</td><td>5,000원</td><td></td></tr>
+          <tr><td></td><td>스테리스트립</td><td>7,000원</td><td></td></tr>
+          <tr><td></td><td>코반</td><td>10,000원~</td><td></td></tr>
+          <tr><td></td><td>메디컬테이핑</td><td>15,000원</td><td></td></tr>
+          <tr><td></td><td colspan="3" style="text-align:left;color:#888;font-size:.76rem">※ 2차부터 비급여</td></tr>
+          <tr><td>연고</td><td>리만겔 (멍크림+소염치료제)</td><td>40,000원</td><td>상온</td></tr>
+          <tr><td></td><td>미보 (화상연고)</td><td>40,000원</td><td>상온</td></tr>
+          <tr><td></td><td>EGF (이지에프새살연고)</td><td>50,000원</td><td>냉장(2~8도)</td></tr>
+          <tr><td></td><td>리게네스</td><td>50,000원</td><td>상온</td></tr>
+          <tr><td></td><td>프로실</td><td>50,000원</td><td>상온</td></tr>
+          <tr><td></td><td>메디터치</td><td>50,000원</td><td>상온</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="footer-note">※ 건강보험심사평가원에서 제공하는 고지 지원서비스를 이용하였습니다.</div>
+  </div>
+
+  <!-- ③ 제증명수수료 -->
+  <div class="tab-content" id="tab-cert">
+    <div class="tbl-wrap">
+      <table id="tbl-cert">
+        <thead>
+          <tr>
+            <th class="th-group">항목</th>
+            <th class="th-group">내용</th>
+            <th class="th-group">금액</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>서류</td><td>상해진단서 2주 이하</td><td>100,000원</td></tr>
+          <tr><td></td><td>상해진단서 3주 이상</td><td>150,000원</td></tr>
+          <tr><td></td><td>일반진단서</td><td>20,000원</td></tr>
+          <tr><td></td><td>영문진단서</td><td>30,000원</td></tr>
+          <tr><td></td><td>소견서</td><td>10,000원</td></tr>
+          <tr><td></td><td>진료확인서</td><td>10,000원</td></tr>
+          <tr><td></td><td>진료확인서 (학교제출용)</td><td>5,000원</td></tr>
+          <tr><td></td><td>통원확인서</td><td>5,000원</td></tr>
+          <tr><td></td><td>초진차트</td><td>2,000원</td></tr>
+          <tr><td></td><td>차트복사 (1일당)</td><td>1,000원</td></tr>
+          <tr><td></td><td>CD복사</td><td>20,000원</td></tr>
+          <tr><td></td><td>CD판독료</td><td>30,000원</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="footer-note">※ 건강보험심사평가원에서 제공하는 고지 지원서비스를 이용하였습니다.</div>
+  </div>
+
+</div><!-- /wrap -->
+
+<script>
+var TAB_INFO = {
+  act:  { title:'행위료',     desc:'비급여 행위료 안내페이지입니다.' },
+  mat:  { title:'치료재료대', desc:'비급여 치료재료 항목 안내 페이지 입니다.' },
+  cert: { title:'제증명수수료', desc:'비급여 제증명수수료 항목 안내 페이지 입니다.' }
+};
+
+function switchTab(id) {
+  document.querySelectorAll('.tab-content').forEach(function(el){ el.classList.remove('active'); });
+  document.querySelectorAll('.tab-btn').forEach(function(el){ el.classList.remove('active'); });
+  document.getElementById('tab-'+id).classList.add('active');
+  event.currentTarget.classList.add('active');
+  document.getElementById('cur-tab-title').textContent = TAB_INFO[id].title;
+  document.getElementById('cur-tab-desc').textContent  = TAB_INFO[id].desc;
+  document.getElementById('searchInput').value = '';
+  clearSearch();
+}
+
+function doSearch() {
+  var kw = document.getElementById('searchInput').value.trim().toLowerCase();
+  var active = document.querySelector('.tab-content.active');
+  var rows = active.querySelectorAll('tbody tr');
+  rows.forEach(function(row) {
+    if (!kw) { row.style.display = ''; return; }
+    var txt = row.textContent.toLowerCase();
+    row.style.display = txt.includes(kw) ? '' : 'none';
+  });
+}
+
+function clearSearch() {
+  var rows = document.querySelectorAll('tbody tr');
+  rows.forEach(function(r){ r.style.display=''; });
+}
+</script>
+</body>
+</html>
