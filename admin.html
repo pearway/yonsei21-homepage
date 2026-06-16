@@ -410,7 +410,7 @@ function initApp(){
 }
 
 // ── 대시보드 ──
-async async function renderDash(){
+async function renderDash(){
   if(!window._db) return;
   try {
     // 예약 수
@@ -470,7 +470,7 @@ var IMG_SLOTS = {
   ]
 };
 
-async async function renderImages(){
+async function renderImages(){
   // DB에서 현재 이미지 URL 목록 로드
   var urls = {};
   if(window._db){
@@ -500,7 +500,7 @@ async async function renderImages(){
   });
 }
 
-async async function uploadImg(input, key, domId){
+async function uploadImg(input, key, domId){
   var file = input.files[0];
   if(!file) return;
   if(!window._storage){ toast('Firebase 로딩 중입니다. 잠시 후 다시 시도하세요.','err'); return; }
@@ -541,7 +541,7 @@ function previewNewPopup(input){
   reader.readAsDataURL(file);
 }
 
-async async function addPopup(){
+async function addPopup(){
   if(!window._db){ toast('Firebase 로딩 중입니다.','err'); return; }
   var name = document.getElementById('new-popup-name').value.trim();
   var link = document.getElementById('new-popup-link').value.trim();
@@ -581,7 +581,7 @@ async async function addPopup(){
   renderDash();
 }
 
-async async function loadPopupSettings(){
+async function loadPopupSettings(){
   if(!window._db) return;
   try {
     var snap = await window._getDocs(window._collection(window._db,'popups'));
@@ -595,24 +595,38 @@ async async function loadPopupSettings(){
       return;
     }
 
-    container.innerHTML = list.map(function(p){
-      return '<div style="display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;padding:14px 0;border-bottom:1px solid #1a2035">'
-        +'<img src="'+p.imageUrl+'" style="width:90px;height:68px;object-fit:cover;border-radius:6px;border:1px solid #2a3150">'
-        +'<div>'
-        +'<div style="font-size:.88rem;font-weight:700;color:#c0cce8;margin-bottom:4px">'+p.name+'</div>'
-        +(p.link?'<div style="font-size:.72rem;color:#4a7fd4;margin-bottom:6px">'+p.link+'</div>':'')
-        +'<div class="toggle-wrap" style="margin:0">'
-        +'<label class="toggle"><input type="checkbox" '+(p.active?'checked':'')+' onchange="setActivePopup(''+p.id+'',this.checked)"><span class="slider"></span></label>'
-        +'<span style="font-size:.8rem;color:'+(p.active?'#4ade80':'#6b7a9f')+'">'+(p.active?'● 노출 중':'비활성')+'</span>'
-        +'</div>'
-        +'</div>'
-        +'<button class="btn btn-danger" style="padding:7px 12px;font-size:.75rem" onclick="deletePopup(''+p.id+'')">삭제</button>'
-        +'</div>';
-    }).join('');
+    container.innerHTML = '';
+    list.forEach(function(p){
+      var div = document.createElement('div');
+      div.style.cssText = 'display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;padding:14px 0;border-bottom:1px solid #1a2035';
+      var img = document.createElement('img');
+      img.src = p.imageUrl;
+      img.style.cssText = 'width:90px;height:68px;object-fit:cover;border-radius:6px;border:1px solid #2a3150';
+      var info = document.createElement('div');
+      var nameEl = document.createElement('div');
+      nameEl.style.cssText = 'font-size:.88rem;font-weight:700;color:#c0cce8;margin-bottom:4px';
+      nameEl.textContent = p.name;
+      info.appendChild(nameEl);
+      if(p.link){ var lEl=document.createElement('div'); lEl.style.cssText='font-size:.72rem;color:#4a7fd4;margin-bottom:6px'; lEl.textContent=p.link; info.appendChild(lEl); }
+      var tw = document.createElement('div'); tw.className='toggle-wrap'; tw.style.margin='0';
+      var lbl = document.createElement('label'); lbl.className='toggle';
+      var chk = document.createElement('input'); chk.type='checkbox'; chk.checked=!!p.active;
+      chk.addEventListener('change',(function(pid){ return function(){ setActivePopup(pid,this.checked); }; })(p.id));
+      var sl = document.createElement('span'); sl.className='slider';
+      lbl.appendChild(chk); lbl.appendChild(sl);
+      var st = document.createElement('span');
+      st.style.cssText='font-size:.8rem;color:'+(p.active?'#4ade80':'#6b7a9f');
+      st.textContent = p.active?'● 노출 중':'비활성';
+      tw.appendChild(lbl); tw.appendChild(st); info.appendChild(tw);
+      var btn = document.createElement('button'); btn.className='btn btn-danger'; btn.style.cssText='padding:7px 12px;font-size:.75rem'; btn.textContent='삭제';
+      btn.addEventListener('click',(function(pid){ return function(){ deletePopup(pid); }; })(p.id));
+      div.appendChild(img); div.appendChild(info); div.appendChild(btn);
+      container.appendChild(div);
+    });
   } catch(e){ console.error(e); }
 }
 
-async async function setActivePopup(id, active){
+async function setActivePopup(id, active){
   if(!window._db) return;
   // 다른 팝업 모두 비활성화
   var snap = await window._getDocs(window._collection(window._db,'popups'));
@@ -626,7 +640,7 @@ async async function setActivePopup(id, active){
   renderDash();
 }
 
-async async function deletePopup(id){
+async function deletePopup(id){
   if(!confirm('이 팝업을 삭제하시겠습니까?')) return;
   await window._deleteDoc(window._doc(window._db,'popups',id));
   toast('삭제되었습니다.','ok');
@@ -636,7 +650,7 @@ async async function deletePopup(id){
 // ── 예약 현황 ──
 var _resList = [];
 
-async async function renderRes(){
+async function renderRes(){
   if(!window._db) return;
   try {
     var snap = await window._getDocs(window._collection(window._db,'reservations'));
@@ -677,14 +691,14 @@ async async function renderRes(){
   }).join('');
 }
 
-async async function deleteRes(id){
+async function deleteRes(id){
   if(!confirm('이 예약을 삭제하시겠습니까?')) return;
   await window._deleteDoc(window._doc(window._db,'reservations',id));
   toast('삭제되었습니다.','ok');
   renderRes();
 }
 
-async async function clearRes(){
+async function clearRes(){
   if(!confirm('예약 목록 전체를 삭제하시겠습니까?')) return;
   var snap = await window._getDocs(window._collection(window._db,'reservations'));
   var dels = [];
