@@ -603,7 +603,6 @@ async function addPopup(){
     document.getElementById('new-popup-progress-fill'),
     document.getElementById('new-popup-progress-txt')
   );
-  prog.style.display = 'none';
 
   await window._addDoc(window._collection(window._db,'popups'), {
     name: name, link: link, imageUrl: imageUrl,
