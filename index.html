@@ -1169,15 +1169,31 @@ async function submitReservation(){
     memo:     document.querySelector('.rf textarea') ? document.querySelector('.rf textarea').value : ''
   };
 
-  try {
-    if(window._db){
-      await window._addDoc(window._collection(window._db,'reservations'), entry);
+  // Firebase 로딩 안됐으면 잠시 대기
+  if(!window._db){
+    var waited = 0;
+    while(!window._db && waited < 5000){
+      await new Promise(function(r){ setTimeout(r, 300); });
+      waited += 300;
     }
-    alert('예약 신청이 완료되었습니다.\n영업일 내 담당자가 확인 후 연락드립니다.\n📞 02-512-5121');
-    document.querySelectorAll('.rf input,.rf select,.rf textarea').forEach(function(el){ el.value=''; });
+  }
+
+  try {
+    if(window._db && window._addDoc && window._collection){
+      await window._addDoc(window._collection(window._db,'reservations'), entry);
+      alert('예약 신청이 완료되었습니다.\n영업일 내 담당자가 확인 후 연락드립니다.\n📞 02-512-5121');
+      document.querySelectorAll('.rf input,.rf select,.rf textarea').forEach(function(el){ el.value=''; });
+    } else {
+      // Firebase 연결 실패 시 전화 안내
+      alert('예약 신청이 접수되지 않았습니다.\n전화로 직접 문의해 주세요.\n📞 02-512-5121');
+    }
   } catch(e){
-    alert('오류가 발생했습니다. 전화로 문의해주세요.\n📞 02-512-5121');
-    console.error(e);
+    console.error('예약 오류:', e.message);
+    if(e.message && e.message.includes('permission')){
+      alert('서버 권한 오류가 발생했습니다.\n전화로 문의해주세요.\n📞 02-512-5121');
+    } else {
+      alert('오류가 발생했습니다. 전화로 문의해주세요.\n📞 02-512-5121\n(오류: '+e.message+')');
+    }
   }
 }
 </script>
