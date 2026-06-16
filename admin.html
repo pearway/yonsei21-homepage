@@ -307,8 +307,6 @@ input,select,textarea,button{font-family:inherit}
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, setDoc, getDoc, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
-import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js';
-
 const firebaseConfig = {
   apiKey: "AIzaSyDlmeNFKNedTYcMv1vkzgNXoEW-MlJmuek",
   authDomain: "yonsei21-6b588.firebaseapp.com",
@@ -320,11 +318,9 @@ const firebaseConfig = {
 
 const fbApp  = initializeApp(firebaseConfig);
 const db     = getFirestore(fbApp);
-const storage = getStorage(fbApp);
 
 // Firebase 상태 노출 (window)
 window._db = db;
-window._storage = storage;
 window._fbReady = true;
 window._collection = collection;
 window._addDoc = addDoc;
@@ -335,10 +331,6 @@ window._setDoc = setDoc;
 window._getDoc = getDoc;
 window._query = query;
 window._orderBy = orderBy;
-window._ref = ref;
-window._uploadBytesResumable = uploadBytesResumable;
-window._getDownloadURL = getDownloadURL;
-window._deleteObject = deleteObject;
 
 document.getElementById('fb-status').innerHTML = '<span style="color:#4ade80">● Firebase 연결됨</span>';
 window._fbReady = true;
@@ -401,15 +393,43 @@ function toast(msg, type){
 }
 
 // ── 앱 초기화 ──
-function initApp(){
+async function initApp(){
+  await migrateLocalRes();
   renderDash();
   renderImages();
   loadPopupSettings();
 }
 
+// ── localStorage 예약 → Firestore 마이그레이션 ──
+async function migrateLocalRes(){
+  if(!window._db) return;
+  var migrated = localStorage.getItem('y21_res_migrated');
+  if(migrated) return; // 이미 마이그레이션 완료
+
+  var old = JSON.parse(localStorage.getItem('y21_res') || '[]');
+  if(old.length === 0){ localStorage.setItem('y21_res_migrated','1'); return; }
+
+  try {
+    var batch = [];
+    for(var i=0; i<old.length; i++){
+      var entry = old[i];
+      if(!entry.ts) entry.ts = Date.now() - (i * 1000);
+      batch.push(window._addDoc(window._collection(window._db,'reservations'), entry));
+    }
+    await Promise.all(batch);
+    localStorage.setItem('y21_res_migrated','1');
+    toast('✓ 기존 예약 '+old.length+'건 복원 완료!','ok');
+  } catch(e){
+    console.error('마이그레이션 오류:', e);
+  }
+}
+
 // ── 대시보드 ──
 async function renderDash(){
-  if(!window._db) return;
+  if(!window._db){
+    setTimeout(renderDash, 1000); // 1초 후 재시도
+    return;
+  }
   try {
     // 예약 수
     var snap = await window._getDocs(window._collection(window._db,'reservations'));
@@ -670,12 +690,22 @@ var _resList = [];
 
 async function renderRes(){
   if(!window._db) return;
+  if(!window._db){
+    document.getElementById('res-empty').textContent = 'Firebase 연결 중... 잠시 후 새로고침해주세요.';
+    document.getElementById('res-empty').style.display = 'block';
+    return;
+  }
   try {
     var snap = await window._getDocs(window._collection(window._db,'reservations'));
     _resList = [];
-    snap.forEach(function(d){ _resList.push({id:d.id,...d.data()}); });
+    snap.forEach(function(d){ _resList.push({id:d.id, ...d.data()}); });
     _resList.sort(function(a,b){ return (b.ts||0)-(a.ts||0); });
-  } catch(e){ console.error(e); }
+  } catch(e){
+    console.error('Firestore 읽기 오류:', e);
+    document.getElementById('res-empty').textContent = '데이터 불러오기 실패: ' + e.message;
+    document.getElementById('res-empty').style.display = 'block';
+    return;
+  }
 
   var kw = (document.getElementById('res-search')||{}).value||'';
   var list = kw ? _resList.filter(function(r){
