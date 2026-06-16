@@ -1026,19 +1026,9 @@ window.scrollToReserv = function(){
 </script>
 
 <!-- 팝업 배너 -->
-<div id="popup-wrap" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:9999;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto">
+<div id="popup-wrap" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:9999;align-items:center;justify-content:center;padding:20px">
 
-  <!-- PC: 나란히 / 모바일: 겹쳐서 전환 -->
   <div style="width:100%;max-width:1000px">
-
-    <!-- 닫기/오늘하루 공통 바 -->
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-      <label style="display:flex;align-items:center;gap:6px;font-size:.82rem;color:rgba(255,255,255,.8);cursor:pointer">
-        <input type="checkbox" id="popup-24h" style="width:14px;height:14px">
-        오늘 하루 보지 않기
-      </label>
-      <button onclick="closePopup()" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);padding:7px 18px;border-radius:6px;font-size:.82rem;cursor:pointer;font-family:inherit;backdrop-filter:blur(4px)">✕ 닫기</button>
-    </div>
 
     <!-- PC: flex row / 모바일: 슬라이더 -->
     <div id="popup-container" style="display:flex;gap:12px;justify-content:center;flex-wrap:nowrap">
@@ -1046,7 +1036,18 @@ window.scrollToReserv = function(){
     </div>
 
     <!-- 모바일 인디케이터 -->
-    <div id="popup-dots" style="display:none;justify-content:center;gap:6px;margin-top:12px"></div>
+    <div id="popup-dots" style="display:none;justify-content:center;gap:6px;margin-top:8px"></div>
+
+    <!-- 하단 닫기 바 -->
+    <div style="display:flex;background:#222;border-radius:0 0 10px 10px;overflow:hidden;margin-top:0">
+      <label style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;font-size:.82rem;color:rgba(255,255,255,.75);cursor:pointer;padding:13px;border-right:1px solid #444">
+        <input type="checkbox" id="popup-24h" style="width:14px;height:14px">
+        오늘 하루동안 보지 않기
+      </label>
+      <button onclick="closePopup()" style="flex:1;background:none;color:rgba(255,255,255,.85);border:none;padding:13px;font-size:.85rem;font-weight:600;cursor:pointer;font-family:inherit">창 닫기</button>
+    </div>
+
+  </div>
 
   </div>
 </div>
@@ -1068,7 +1069,7 @@ window.scrollToReserv = function(){
 }
 .popup-slide{
   background:#fff;
-  border-radius:12px;
+  border-radius:10px 10px 0 0;
   overflow:hidden;
   box-shadow:0 16px 48px rgba(0,0,0,.4);
   flex:0 0 calc(33.33% - 8px);
