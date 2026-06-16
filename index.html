@@ -1095,40 +1095,54 @@ const firebaseConfig = {
 const fbApp = initializeApp(firebaseConfig);
 const db    = getFirestore(fbApp);
 
-// ── 이미지 로드 ──
-const IMG_MAP = {
-  img_stem:'stem', img_emrg:'emrg', img_osteo:'osteo', img_doctor:'doctor',
-  img_g1:'g1', img_g2:'g2', img_g3:'g3', img_g4:'g4', img_g5:'g5'
-};
-const imgSnap = await getDocs(collection(db,'images'));
-imgSnap.forEach(function(d){
-  const url = d.data().url;
-  const elId = Object.keys(IMG_MAP).find(k => IMG_MAP[k]===d.id);
-  if(elId && url){
-    const el = document.getElementById(elId);
-    if(el) el.src = url;
-  }
-});
-
-// ── 팝업 로드 ──
-const popSnap = await getDoc(doc(db,'settings','popup'));
-if(popSnap.exists()){
-  const pd = popSnap.data();
-  if(pd.active && pd.imageUrl){
-    const closed = localStorage.getItem('y21_popup_closed');
-    if(!closed || (Date.now()-parseInt(closed)) > 86400000){
-      document.getElementById('popup-img').src = pd.imageUrl;
-      const linkWrap = document.getElementById('popup-link-wrap');
-      if(pd.link){ linkWrap.href = pd.link; } else { linkWrap.onclick = function(e){ e.preventDefault(); }; }
-      document.getElementById('popup-wrap').style.display = 'flex';
-    }
-  }
-}
-
-// ── 예약 저장 ──
+// ── 예약 저장용 window 노출 (최우선) ──
 window._db = db;
 window._collection = collection;
 window._addDoc = addDoc;
+
+// ── 이미지 로드 ──
+try {
+  const IMG_MAP = {
+    img_stem:'stem', img_emrg:'emrg', img_osteo:'osteo', img_doctor:'doctor',
+    img_oa:'oa', img_g1:'g1', img_g2:'g2', img_g3:'g3', img_g4:'g4', img_g5:'g5'
+  };
+  const imgSnap = await getDocs(collection(db,'images'));
+  imgSnap.forEach(function(d){
+    const url = d.data().url;
+    const elId = Object.keys(IMG_MAP).find(k => IMG_MAP[k]===d.id);
+    if(elId && url){ const el = document.getElementById(elId); if(el) el.src = url; }
+  });
+} catch(e){ console.warn('이미지 로드 실패:', e.message); }
+
+// ── 팝업 로드 (다중) ──
+try {
+  const closed = localStorage.getItem('y21_popup_closed');
+  const skip24 = closed && (Date.now()-parseInt(closed)) < 86400000;
+  if(!skip24){
+    const popSnap = await getDocs(collection(db,'popups'));
+    const activePopups = [];
+    popSnap.forEach(function(d){ if(d.data().active) activePopups.push(d.data()); });
+    activePopups.sort(function(a,b){ return (a.created||0)-(b.created||0); });
+    if(activePopups.length > 0){
+      const container = document.getElementById('popup-container');
+      container.innerHTML = activePopups.map(function(p,i){
+        return '<div class="popup-slide'+(i===0?' active':'')+'">'
+          +(p.link?'<a href="'+p.link+'" target="_blank"><img src="'+p.imageUrl+'" alt="팝업"></a>'
+                  :'<img src="'+p.imageUrl+'" alt="팝업">')
+          +'</div>';
+      }).join('');
+      if(activePopups.length > 1){
+        const dots = document.getElementById('popup-dots');
+        dots.innerHTML = activePopups.map(function(_,i){
+          return '<span onclick="goPopupSlide('+i+')" style="width:8px;height:8px;border-radius:50%;background:'+(i===0?'#fff':'rgba(255,255,255,.4)')+';cursor:pointer;display:inline-block"></span>';
+        }).join('');
+        let cur=0;
+        setInterval(function(){ if(window.innerWidth>640) return; cur=(cur+1)%activePopups.length; goPopupSlide(cur); }, 3500);
+      }
+      document.getElementById('popup-wrap').style.display='flex';
+    }
+  }
+} catch(e){ console.warn('팝업 로드 실패:', e.message); }
 </script>
 
 <script>
