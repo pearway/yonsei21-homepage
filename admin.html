@@ -349,6 +349,7 @@ if(window._pendingLogin){ window._pendingLogin=false; initApp(); }
 <script>
 // ── 비밀번호 ──
 var KPW = 'y21c_pw';
+var IMGBB_KEY = 'a30589060a838d5be3ae5c8e8a7d47ae';
 function gPw(){ return localStorage.getItem(KPW) || '1234'; }
 
 function doLogin(){
@@ -527,6 +528,35 @@ async function uploadImg(input, key, domId){
   );
 }
 
+
+// ── ImgBB 이미지 업로드 ──
+async function uploadToImgBB(file, progressEl, progressFill, progressTxt){
+  return new Promise(function(resolve, reject){
+    var reader = new FileReader();
+    reader.onload = async function(e){
+      var base64 = e.target.result.split(',')[1];
+      if(progressEl) progressEl.style.display = 'block';
+      if(progressFill) progressFill.style.width = '30%';
+      if(progressTxt) progressTxt.textContent = '업로드 중...';
+      try {
+        var form = new FormData();
+        form.append('image', base64);
+        var res = await fetch('https://api.imgbb.com/1/upload?key='+IMGBB_KEY, {method:'POST', body:form});
+        var data = await res.json();
+        if(data.success){
+          if(progressFill) progressFill.style.width = '100%';
+          if(progressTxt) progressTxt.textContent = '완료!';
+          setTimeout(function(){ if(progressEl) progressEl.style.display='none'; }, 800);
+          resolve(data.data.url);
+        } else {
+          reject(new Error('ImgBB 업로드 실패'));
+        }
+      } catch(err){ reject(err); }
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
 // ── 팝업 관리 (다중) ──
 function previewNewPopup(input){
   var file = input.files[0];
@@ -547,22 +577,12 @@ async function addPopup(){
   if(!name){ toast('팝업 이름을 입력하세요.','err'); return; }
   if(!file){ toast('이미지를 선택하세요.','err'); return; }
 
-  var prog = document.getElementById('new-popup-progress');
-  prog.style.display = 'block';
-  var storageRef = window._ref(window._storage, 'popup/'+Date.now()+'.'+file.name.split('.').pop());
-  var task = window._uploadBytesResumable(storageRef, file);
-  var imageUrl = '';
-  await new Promise(function(res,rej){
-    task.on('state_changed',
-      function(snap){
-        var pct = Math.round(snap.bytesTransferred/snap.totalBytes*100);
-        document.getElementById('new-popup-progress-fill').style.width = pct+'%';
-        document.getElementById('new-popup-progress-txt').textContent = '업로드 중... '+pct+'%';
-      },
-      rej,
-      async function(){ imageUrl = await window._getDownloadURL(task.snapshot.ref); res(); }
-    );
-  });
+  var imageUrl = await uploadToImgBB(
+    file,
+    document.getElementById('new-popup-progress'),
+    document.getElementById('new-popup-progress-fill'),
+    document.getElementById('new-popup-progress-txt')
+  );
   prog.style.display = 'none';
 
   await window._addDoc(window._collection(window._db,'popups'), {
