@@ -78,8 +78,8 @@ nav{display:flex;align-items:center;gap:2px}
 .hero-h1 strong{font-weight:700}
 .hero-h1 em{font-style:normal;color:var(--gold-lt)}
 .hero-p{font-size:.95rem;color:rgba(255,255,255,.88);max-width:460px;line-height:1.95;margin-bottom:50px;font-weight:300}
-.hero-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;max-width:960px}
-.hcard{padding:26px 28px 22px;border-radius:14px;cursor:pointer;transition:transform .3s,box-shadow .3s;position:relative;overflow:hidden}
+.hero-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:1200px}
+.hcard{padding:22px 20px 18px;border-radius:14px;cursor:pointer;transition:transform .3s,box-shadow .3s;position:relative;overflow:hidden}
 .hcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
 .hcard.gc{background:linear-gradient(135deg,rgba(201,153,58,.16),rgba(201,153,58,.06));border:1px solid rgba(201,153,58,.28)}
 .hcard.gc::before{background:var(--gold)}
@@ -366,9 +366,9 @@ footer{padding:32px 40px;background:var(--ink);border-top:1px solid rgba(255,255
 </header>
 
 <div class="mob-nav" id="mn">
-  <a href="#emrg" onclick="document.getElementById('mn').classList.remove('open')">🏥 외상처치 &amp; 응급수술 (핵심)</a>
-  <a href="#stem" onclick="document.getElementById('mn').classList.remove('open')">🔬 줄기세포 시술 (핵심)</a>
-      <a href="#osteo" onclick="document.getElementById('mn').classList.remove('open')" style="color:#7DC241">🦴 골다공증 특화 치료</a>
+  <a href="#emrg" onclick="document.getElementById('mn').classList.remove('open')">외상처치 &amp; 응급수술</a>
+  <a href="#stem" onclick="document.getElementById('mn').classList.remove('open')">줄기세포 시술</a>
+      <a href="#osteo" onclick="document.getElementById('mn').classList.remove('open')" style="color:#7DC241">골다공증 특화 치료</a>
   <a href="#treats" onclick="document.getElementById('mn').classList.remove('open')">진료과목</a>
   <a href="#methods" onclick="document.getElementById('mn').classList.remove('open')">치료 방법</a>
   <a href="#doctor" onclick="document.getElementById('mn').classList.remove('open')">의료진 소개</a>
