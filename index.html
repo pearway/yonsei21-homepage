@@ -1028,10 +1028,10 @@ window.scrollToReserv = function(){
 <!-- 팝업 배너 -->
 <div id="popup-wrap" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:9999;align-items:center;justify-content:center;padding:20px">
 
-  <div style="width:100%;max-width:480px">
+  <div style="width:100%;max-width:500px">
 
     <!-- PC: flex row / 모바일: 슬라이더 -->
-    <div id="popup-container" style="display:flex;gap:0;justify-content:center;flex-wrap:nowrap;border-radius:10px 10px 0 0;overflow:hidden">
+    <div id="popup-container" style="display:flex;gap:0;justify-content:center;flex-wrap:nowrap;border-radius:10px 10px 0 0;overflow:hidden;width:100%">
       <!-- JS로 채움 -->
     </div>
 
@@ -1071,13 +1071,14 @@ window.scrollToReserv = function(){
   background:#fff;
   border-radius:0;
   width:100%;
+  flex:1;
   overflow:hidden;
   box-shadow:0 16px 48px rgba(0,0,0,.4);
   flex:0 0 calc(33.33% - 8px);
   max-width:320px;
   min-width:240px;
 }
-.popup-slide img{width:100%;display:block}
+.popup-slide img{width:100%;display:block;object-fit:cover}
 </style>
 
 <!-- Firebase SDK -->
@@ -1129,8 +1130,8 @@ try {
       const container = document.getElementById('popup-container');
       container.innerHTML = activePopups.map(function(p,i){
         return '<div class="popup-slide'+(i===0?' active':'')+'">'
-          +(p.link?'<a href="'+p.link+'" target="_blank"><img src="'+p.imageUrl+'" alt="팝업"></a>'
-                  :'<img src="'+p.imageUrl+'" alt="팝업">')
+          +(p.link?'<a href="'+p.link+'" target="_blank" style="display:block"><img src="'+p.imageUrl+'" alt="팝업" style="width:100%;display:block"></a>'
+                  :'<img src="'+p.imageUrl+'" alt="팝업" style="width:100%;display:block">')
           +'</div>';
       }).join('');
       if(activePopups.length > 1){
