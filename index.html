@@ -1054,11 +1054,6 @@ window.scrollToReserv = function(){
 
 <style>
 @media(max-width:640px){
-  #popup-container{
-    position:relative;
-    width:100%;
-    min-height:200px;
-  }
   .popup-slide{
     position:absolute!important;
     top:0;left:0;width:100%!important;
@@ -1069,9 +1064,7 @@ window.scrollToReserv = function(){
 }
 .popup-slide{
   background:#fff;
-  border-radius:0;
   width:100%;
-  flex:1;
   overflow:hidden;
   box-shadow:0 16px 48px rgba(0,0,0,.4);
   flex:0 0 calc(33.33% - 8px);
@@ -1128,6 +1121,13 @@ try {
     activePopups.sort(function(a,b){ return (a.created||0)-(b.created||0); });
     if(activePopups.length > 0){
       const container = document.getElementById('popup-container');
+      // 첫번째 이미지 로드 후 컨테이너 높이 설정
+      var firstImg = new Image();
+      firstImg.onload = function(){
+        container.style.height = Math.round(360 * firstImg.naturalHeight / firstImg.naturalWidth) + 'px';
+      };
+      firstImg.src = activePopups[0].imageUrl;
+
       container.innerHTML = activePopups.map(function(p,i){
         return '<div class="popup-slide'+(i===0?' active':'')+'">'
           +(p.link?'<a href="'+p.link+'" target="_blank" style="display:block"><img src="'+p.imageUrl+'" alt="팝업" style="width:100%;display:block"></a>'
