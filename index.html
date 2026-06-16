@@ -334,6 +334,16 @@ footer{padding:32px 40px;background:var(--ink);border-top:1px solid rgba(255,255
   .rrow{grid-template-columns:1fr}
   .sns-g{flex-direction:column;align-items:flex-start}
 }
+
+/* ── 팝업 ── */
+.popup-slide{display:none;width:100%}
+.popup-slide.active{display:block}
+.popup-slide img{width:100%;display:block}
+.popup-slide a{display:block;line-height:0}
+/* 모바일에서도 동일하게 active만 표시 */
+@media(max-width:640px){
+  #popup-dots{display:flex!important}
+}
 </style>
 <!-- Lenis smooth scroll -->
 <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
@@ -1053,25 +1063,8 @@ window.scrollToReserv = function(){
 </div>
 
 <style>
-@media(max-width:640px){
-  .popup-slide{
-    position:absolute!important;
-    top:0;left:0;width:100%!important;
-    opacity:0;transition:opacity .4s;pointer-events:none;
-  }
-  .popup-slide.active{opacity:1!important;pointer-events:auto!important}
-  #popup-dots{display:flex!important}
-}
-.popup-slide{
-  background:#fff;
-  width:100%;
-  overflow:hidden;
-  box-shadow:0 16px 48px rgba(0,0,0,.4);
-  flex:0 0 calc(33.33% - 8px);
-  max-width:320px;
-  min-width:240px;
-}
-.popup-slide img{width:100%;display:block;object-fit:cover}
+
+
 </style>
 
 <!-- Firebase SDK -->
@@ -1121,26 +1114,19 @@ try {
     activePopups.sort(function(a,b){ return (a.created||0)-(b.created||0); });
     if(activePopups.length > 0){
       const container = document.getElementById('popup-container');
-      // 첫번째 이미지 로드 후 컨테이너 높이 설정
-      var firstImg = new Image();
-      firstImg.onload = function(){
-        container.style.height = Math.round(360 * firstImg.naturalHeight / firstImg.naturalWidth) + 'px';
-      };
-      firstImg.src = activePopups[0].imageUrl;
-
       container.innerHTML = activePopups.map(function(p,i){
         return '<div class="popup-slide'+(i===0?' active':'')+'">'
-          +(p.link?'<a href="'+p.link+'" target="_blank" style="display:block"><img src="'+p.imageUrl+'" alt="팝업" style="width:100%;display:block"></a>'
-                  :'<img src="'+p.imageUrl+'" alt="팝업" style="width:100%;display:block">')
+          +(p.link?'<a href="'+p.link+'" target="_blank"><img src="'+p.imageUrl+'" alt="팝업"></a>'
+                  :'<img src="'+p.imageUrl+'" alt="팝업">')
           +'</div>';
       }).join('');
       if(activePopups.length > 1){
-        const dots = document.getElementById('popup-dots');
+        var dots = document.getElementById('popup-dots');
         dots.innerHTML = activePopups.map(function(_,i){
-          return '<span onclick="goPopupSlide('+i+')" style="width:8px;height:8px;border-radius:50%;background:'+(i===0?'#fff':'rgba(255,255,255,.4)')+';cursor:pointer;display:inline-block"></span>';
+          return '<span onclick="goPopupSlide('+i+')" style="width:8px;height:8px;border-radius:50%;background:'+(i===0?'#fff':'rgba(255,255,255,.4)')+';cursor:pointer;display:inline-block;margin:0 3px"></span>';
         }).join('');
-        let cur=0;
-        setInterval(function(){ if(window.innerWidth>640) return; cur=(cur+1)%activePopups.length; goPopupSlide(cur); }, 3500);
+        var cur=0;
+        setInterval(function(){ cur=(cur+1)%activePopups.length; goPopupSlide(cur); }, 3500);
       }
       document.getElementById('popup-wrap').style.display='flex';
     }
