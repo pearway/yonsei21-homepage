@@ -345,8 +345,8 @@ window._deleteObject = deleteObject;
 
 document.getElementById('fb-status').innerHTML = '<span style="color:#4ade80">● Firebase 연결됨</span>';
 window._fbReady = true;
-// 로그인 대기 중이었으면 진행
-if(window._pendingLogin){ window._pendingLogin(); window._pendingLogin=null; }
+// 로그인 대기 중이었으면 데이터 로드
+if(window._pendingLogin){ window._pendingLogin=false; initApp(); }
 </script>
 
 <script>
@@ -357,20 +357,14 @@ function gPw(){ return localStorage.getItem(KPW) || '1234'; }
 function doLogin(){
   var pw = document.getElementById('loginPw').value;
   if(pw === gPw()){
-    if(!window._fbReady){
-      // Firebase 아직 로딩 중 → 준비되면 실행
-      document.getElementById('loginErr').style.display = 'none';
-      document.getElementById('loginPw').placeholder = '연결 중...';
-      window._pendingLogin = function(){
-        document.getElementById('loginPw').placeholder = '비밀번호';
-        document.getElementById('loginScreen').style.display = 'none';
-        document.getElementById('app').style.display = 'block';
-        initApp();
-      };
-    } else {
-      document.getElementById('loginScreen').style.display = 'none';
-      document.getElementById('app').style.display = 'block';
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    // Firebase 준비되면 데이터 로드
+    if(window._fbReady){
       initApp();
+    } else {
+      window._pendingLogin = true;
+      document.getElementById('page-dashboard').innerHTML = '<div style="color:#6b7a9f;padding:40px;font-size:.85rem">Firebase 연결 중... 잠시만 기다려주세요.</div>';
     }
   } else {
     document.getElementById('loginErr').style.display = 'block';
