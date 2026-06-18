@@ -1068,7 +1068,7 @@ window.scrollToReserv = function(){
 
 </style>
 
-<!-- Firebase SDK -->
+<!-- 데이터 연동 -->
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import { getFirestore, collection, addDoc, getDocs, doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
@@ -1173,7 +1173,7 @@ async function submitReservation(){
     memo:     document.querySelector('.rf textarea') ? document.querySelector('.rf textarea').value : ''
   };
 
-  // Firebase 로딩 안됐으면 잠시 대기
+  // 연결 대기
   if(!window._db){
     var waited = 0;
     while(!window._db && waited < 5000){
@@ -1188,7 +1188,7 @@ async function submitReservation(){
       alert('예약 신청이 완료되었습니다.\n영업일 내 담당자가 확인 후 연락드립니다.\n📞 02-512-5121');
       document.querySelectorAll('.rf input,.rf select,.rf textarea').forEach(function(el){ el.value=''; });
     } else {
-      // Firebase 연결 실패 시 전화 안내
+      // 연결 실패 시 전화 안내
       alert('예약 신청이 접수되지 않았습니다.\n전화로 직접 문의해 주세요.\n📞 02-512-5121');
     }
   } catch(e){

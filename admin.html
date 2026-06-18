@@ -303,7 +303,7 @@ input,select,textarea,button{font-family:inherit}
 
 <div id="toast"></div>
 
-<!-- Firebase SDK -->
+<!-- 데이터 연동 -->
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, setDoc, getDoc, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
@@ -319,7 +319,7 @@ const firebaseConfig = {
 const fbApp  = initializeApp(firebaseConfig);
 const db     = getFirestore(fbApp);
 
-// Firebase 상태 노출 (window)
+// 데이터 연동 노출
 window._db = db;
 window._fbReady = true;
 window._collection = collection;
@@ -332,7 +332,6 @@ window._getDoc = getDoc;
 window._query = query;
 window._orderBy = orderBy;
 
-document.getElementById('fb-status').innerHTML = '<span style="color:#4ade80">● Firebase 연결됨</span>';
 window._fbReady = true;
 // 로그인 대기 중이었으면 데이터 로드
 if(window._pendingLogin){ window._pendingLogin=false; initApp(); }
@@ -349,12 +348,12 @@ function doLogin(){
   if(pw === gPw()){
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('app').style.display = 'block';
-    // Firebase 준비되면 데이터 로드
+    // 데이터 준비되면 로드
     if(window._fbReady){
       initApp();
     } else {
       window._pendingLogin = true;
-      document.getElementById('page-dashboard').innerHTML = '<div style="color:#6b7a9f;padding:40px;font-size:.85rem">Firebase 연결 중... 잠시만 기다려주세요.</div>';
+      document.getElementById('page-dashboard').innerHTML = '<div style="color:#6b7a9f;padding:40px;font-size:.85rem">연결 중... 잠시만 기다려주세요.</div>';
     }
   } else {
     document.getElementById('loginErr').style.display = 'block';
@@ -522,30 +521,23 @@ async function renderImages(){
 async function uploadImg(input, key, domId){
   var file = input.files[0];
   if(!file) return;
-  if(!window._storage){ toast('Firebase 로딩 중입니다. 잠시 후 다시 시도하세요.','err'); return; }
+  if(!window._db){ toast('연결 중입니다. 잠시 후 다시 시도하세요.','err'); return; }
 
+  var card = document.getElementById('icard-'+key);
+  if(card) card.querySelector('.ist').textContent = '업로드 중...';
   toast('업로드 중...');
-  var storageRef = window._ref(window._storage, 'images/'+key+'_'+Date.now()+'.'+file.name.split('.').pop());
-  var task = window._uploadBytesResumable(storageRef, file);
 
-  task.on('state_changed',
-    function(snap){
-      var pct = Math.round(snap.bytesTransferred/snap.totalBytes*100);
-      var card = document.getElementById('icard-'+key);
-      if(card) card.querySelector('.ist').textContent = '업로드 중... '+pct+'%';
-    },
-    function(err){ toast('업로드 실패: '+err.message,'err'); },
-    async function(){
-      var url = await window._getDownloadURL(task.snapshot.ref);
-      // Firestore에 URL 저장
-      await window._setDoc(window._doc(window._db,'images',key), {url:url, updated: Date.now()});
-      toast('✓ 이미지 업로드 완료!','ok');
-      renderImages();
-      // 홈페이지 이미지 캐시 갱신용 localStorage
-      localStorage.setItem('y21_img_'+key, url);
-      localStorage.setItem('y21_img_'+key+'_ts', Date.now().toString());
-    }
-  );
+  try {
+    // ImgBB 업로드
+    var url = await uploadToImgBB(file, null, null, null);
+    // Firestore에 URL 저장
+    await window._setDoc(window._doc(window._db,'images',key), {url:url, updated: Date.now()});
+    toast('✓ 이미지 업로드 완료!','ok');
+    renderImages();
+  } catch(e){
+    toast('업로드 실패: '+e.message,'err');
+    if(card) card.querySelector('.ist').textContent = '업로드 실패';
+  }
 }
 
 
@@ -590,7 +582,7 @@ function previewNewPopup(input){
 }
 
 async function addPopup(){
-  if(!window._db){ toast('Firebase 로딩 중입니다.','err'); return; }
+  if(!window._db){ toast('연결 중입니다.','err'); return; }
   var name = document.getElementById('new-popup-name').value.trim();
   var link = document.getElementById('new-popup-link').value.trim();
   var file = document.getElementById('new-popup-file').files[0];
@@ -690,7 +682,7 @@ var _resList = [];
 async function renderRes(){
   if(!window._db) return;
   if(!window._db){
-    document.getElementById('res-empty').textContent = 'Firebase 연결 중... 잠시 후 새로고침해주세요.';
+    document.getElementById('res-empty').textContent = '연결 중... 잠시 후 새로고침해주세요.';
     document.getElementById('res-empty').style.display = 'block';
     return;
   }
