@@ -1097,11 +1097,25 @@ try {
     img_oa:'oa', img_g1:'g1', img_g2:'g2', img_g3:'g3', img_g4:'g4', img_g5:'g5'
   };
   const imgSnap = await getDocs(collection(db,'images'));
-  imgSnap.forEach(function(d){
-    const url = d.data().url;
-    const elId = Object.keys(IMG_MAP).find(k => IMG_MAP[k]===d.id);
-    if(elId && url){ const el = document.getElementById(elId); if(el) el.src = url; }
-  });
+  const imgUrls = {};
+  imgSnap.forEach(function(d){ imgUrls[d.id] = d.data().url; });
+
+  function applyImages(){
+    Object.keys(IMG_MAP).forEach(function(elId){
+      const key = IMG_MAP[elId];
+      const url = imgUrls[key];
+      if(url){
+        const el = document.getElementById(elId);
+        if(el){ el.src = url; el.onerror = null; }
+      }
+    });
+  }
+  // DOM 준비 여부와 관계없이 적용
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', applyImages);
+  } else {
+    applyImages();
+  }
 } catch(e){ console.warn('이미지 로드 실패:', e.message); }
 
 // ── 팝업 로드 (다중) ──
